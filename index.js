@@ -149,12 +149,13 @@ var weatherParser = function (callback) {
   });
 };
 
-var wordDB = function (word, callback) {
-  url = "http://121.186.23.245:9997/"+word[0];
-  req = request.get(url);
-  req = req.json();
-  index = req.length;
-  callback(index);
+var wordDB = function (callback) {
+  var url = "http://121.186.23.245:9997/"+word[0];
+  request(url, function(err, response, body) {
+    var req = response.json();
+    var index = req.length;
+    callback(index);
+  });
 }
 
 var end2endState = false;
