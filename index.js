@@ -136,7 +136,7 @@ var schoolSchedule = function () {
 };
 
 // 날씨
-var weatherParser = function () {
+var weatherParser = function (callback) {
 
   var url = 'http://www.kma.go.kr/weather/forecast/mid-term-rss3.jsp?stnId=109';
   request(url, function (err, response, body) {
@@ -145,7 +145,7 @@ var weatherParser = function () {
     var text = body.substring(index, last);
     var replaceText = text.replace(/<br \/>/ig, "\n");
     // return replaceText;
-    return "weather test";
+    callback("weather test"); 
   });
 };
   
@@ -174,7 +174,9 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, weatherParser());
+        sendTextMessage(senderID, weatherParser(function(value) {
+            return value;
+        }));
         // sendTextMessage(senderID, "어쩌라고");
     }
   } else if (messageAttachments) {
