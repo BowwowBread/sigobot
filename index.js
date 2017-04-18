@@ -187,12 +187,12 @@ function receivedMessage(event) {
       })
     }
     if (scheduleMatching.rating > 0.5) {
-      schoolSchedule(function (value) {
+      schoolSchedule(function (result) {
         sendTextMessage(senderID, result);
       })
     }
     if (weatherMatching.rating > 0.5) {
-      weatherParser(function (value) {
+      weatherParser(function (result) {
         sendTextMessage(senderID, "오늘의 날씨는 " + result);
       })
     } else {
