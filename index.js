@@ -152,7 +152,7 @@ var weatherParser = function (callback) {
 var wordDB = function (word, callback) {
   var url = "http://121.186.23.245:9997/"+word[0];
   request(url, function(err, response, body) {
-    var req = response.json();
+    var req = JSON.stringify(response);
     var index = req.length;
     callback(index);
   });
