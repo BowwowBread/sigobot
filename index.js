@@ -154,7 +154,7 @@ var wordDB = function (word) {
   req = requests.get(url);
   req = req.json();
   index = req.length;
-  callback(index);
+  return index;
 }
 
 var end2endState = false;
