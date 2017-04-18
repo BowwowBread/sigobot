@@ -151,7 +151,7 @@ var weatherParser = function (callback) {
 
 var wordDB = function (word, callback) {
   url = "http://121.186.23.245:9997/"+word[0];
-  req = requests.get(url);
+  req = request.get(url);
   req = req.json();
   index = req.length;
   callback(index);
