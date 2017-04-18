@@ -10,8 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.3.0",
     "body-parser": "^1.17.1",
+    "cheerio": "^0.22.0",
+    "child_process": "^1.0.2",
     "express": "^4.15.2",
-    "request": "^2.81.0"
+    "iconv": "^2.2.3",
+    "iconv-lite": "^0.4.15",
+    "node-schedule": "^1.2.1",
+    "request": "^2.81.0",
+    "string-similarity": "^1.1.0"
   }
 }
