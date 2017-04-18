@@ -149,12 +149,12 @@ var weatherParser = function (callback) {
   });
 };
 
-var wordDB = function (word) {
+var wordDB = function (word, callback) {
   url = "http://121.186.23.245:9997/"+word[0];
   req = requests.get(url);
   req = req.json();
   index = req.length;
-  return index;
+  callback(index);
 }
 
 var end2endState = false;
@@ -195,12 +195,14 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     if (end2endState) {
-      sendTextMessage(senderID, end2endState.toString());
       if (end2endFinishMatching.rating > 0.7) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
-        sendTextMessage(senderID, wordDB(messageText.split));
+        var word = messageText.split;
+        wordDB(function (word, result) {
+          sendTextMessage(senderID, result);
+        })
       }
     } else {
       if (hiMatching.rating > 0.5) {
