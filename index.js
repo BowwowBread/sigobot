@@ -166,7 +166,7 @@ function receivedMessage(event) {
 
   if (messageText) {
     var detecting = {
-      cafeteria: ['오늘급식', '급식', '내일급식', '점심', '오늘점심', '내일점심'],
+      cafeteria: ['급식', '점심', '오늘점심'],
       schedule: ['스케줄', '일정', '내일일정'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
       weather: ['weather', '날씨', '오늘 날씨'],
