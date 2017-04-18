@@ -10,18 +10,20 @@ const access = process.env.FB_ACCESS_TOKEN
 
 app.set('port', (process.env.PORT || 5000))
 
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
 app.use(bodyParser.json())
 
 app.get('/', function (req, res) {
   res.send('this is sigo chatbot!')
 })
 
-app.get('/webhook/', function(req, res) {
-  if(req.query['hub.verify_token'] === token) {
+app.get('/webhook/', function (req, res) {
+  if (req.query['hub.verify_token'] === token) {
     res.send(req.query['hub.challenge'])
-   }
-   res.send('No entry')
+  }
+  res.send('No entry')
 })
 
 app.post('/webhook', function (req, res) {
@@ -29,11 +31,11 @@ app.post('/webhook', function (req, res) {
 
   if (data.object === 'page') {
 
-    data.entry.forEach(function(entry) {
+    data.entry.forEach(function (entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
 
-      entry.messaging.forEach(function(event) {
+      entry.messaging.forEach(function (event) {
         if (event.message) {
           receivedMessage(event);
         } else {
@@ -47,7 +49,7 @@ app.post('/webhook', function (req, res) {
 });
 
 // 학교 급식
-var schoolCafeteria = function (chat) {
+var schoolCafeteria = function (chat, callback) {
 
   // 현재 날짜
   var time = new Date();
@@ -75,7 +77,7 @@ var schoolCafeteria = function (chat) {
       // 데이터가 존재하지 않을 시 가져오지 못함
       var postDiv = $(this).find("div").html();
       if (postDiv == null) {
-        return "나이스 서버 오류 입니다.";
+        callback("나이스 서버 오류 입니다.");
       }
       // 해당 날짜 급식을 배열로 변환
       var postArray = postDiv.split("<br>");
@@ -83,12 +85,12 @@ var schoolCafeteria = function (chat) {
       var result = "";
       if (postArray[0] == timeDay) {
         if (postArray.length <= 1) {
-          return "급식을 먹는날이 아닙니다";
+          callback("급식을 먹는날이 아닙니다");
         } else {
           for (var i = 0; i < postArray.length; i++) {
             result = result + postArray[i] + '\n';
           }
-          return result;
+          callback(result);
         }
       }
     });
@@ -96,7 +98,7 @@ var schoolCafeteria = function (chat) {
 };
 
 // 학교 일정
-var schoolSchedule = function () {
+var schoolSchedule = function (callback) {
 
   var time = new Date();
   var timeYear = time.getFullYear();
@@ -128,9 +130,10 @@ var schoolSchedule = function () {
     });
 
     if (message != '') {
-      return timeMonth + '월 일정입니다';
+      callback(timeMonth+'월 일정입니다');    
+      callback(message);
     } else {
-      return timeMonth + "월 일정이 없습니다";
+      callback(timeMonth + "월 일정이 없습니다");
     }
   });
 };
@@ -145,17 +148,17 @@ var weatherParser = function (callback) {
     var text = body.substring(index, last);
     var replaceText = text.replace(/<br \/>/ig, "\n");
     // return replaceText;
-    callback(replaceText); 
+    callback(replaceText);
   });
 };
-  
+
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:", 
+  console.log("Received message for user %d and page %d at %d with message:",
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
 
@@ -165,20 +168,47 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if (messageText) {
-      weatherParser(function (value) {
-        sendTextMessage(senderID, value);
+    var detecting = {
+      cafeteria: ['오늘급식', '급식', '내일급식', '점심', '오늘점심', '내일점심'],
+      schedule: ['스케줄', '일정', '내일일정'],
+      hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
+      weather: ['weather', '날씨', '오늘 날씨'],
+    };
+
+    // 텍스트 매칭
+    var cafeMatching = stringSimilarity.findBestMatch(messageText, detecting.cafeteria).bestMatch;
+    var scheduleMatching = stringSimilarity.findBestMatch(messageText, detecting.schedule).bestMatch;
+    var hiMatching = stringSimilarity.findBestMatch(messageText, detecting.hi).bestMatch;
+    var weatherMatching = stringSimilarity.findBestMatch(messageText, detecting.weather).bestMatch;
+
+    if (hiMatching.rating > 0.5) {
+      sendTextMessage(senderID, '안녕하세요');
+    }
+    if (cafeMatching.rating > 0.5) {
+      schoolCafeteria(function (messageText, result) {
+        sendTextMessage(senderID, result);
       })
-        // sendTextMessage(senderID, weatherParser(function(value) {
-        //     return 'hihi';
-        // }));
-        // sendTextMessage(senderID, "어쩌라고");
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
+    }
+    if (scheduleMatching.rating > 0.5) {
+      schoolSchedule(function (value) {
+        sendTextMessage(senderID, result);
+      })
+    }
+    if (weatherMatching.rating > 0.5) {
+      weatherParser(function (value) {
+        sendTextMessage(senderID, "오늘의 날씨는 " + result);
+      })
+    } else {
+      sendTextMessage(senderID, messageText);
+    }
   }
+
 }
+
 function sendGenericMessage(recipientId, messageText) {
   // To be expanded in later sections
 }
+
 function sendTextMessage(recipientId, messageText) {
   var messageData = {
     recipient: {
@@ -191,10 +221,13 @@ function sendTextMessage(recipientId, messageText) {
 
   callSendAPI(messageData);
 }
+
 function callSendAPI(messageData) {
-  request({ 
+  request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: access },
+    qs: {
+      access_token: access
+    },
     method: 'POST',
     json: messageData
 
@@ -203,15 +236,15 @@ function callSendAPI(messageData) {
       var recipientId = body.recipient_id;
       var messageId = body.message_id;
 
-      console.log("Successfully sent generic message with id %s to recipient %s", 
+      console.log("Successfully sent generic message with id %s to recipient %s",
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
       console.error(response);
       console.error(error);
     }
-  });  
+  });
 }
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
   console.log('running on port', app.get('port'))
 })
