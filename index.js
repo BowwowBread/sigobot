@@ -144,7 +144,8 @@ var weatherParser = function () {
     var last = body.indexOf("]]>");
     var text = body.substring(index, last);
     var replaceText = text.replace(/<br \/>/ig, "\n");
-    return replaceText;
+    // return replaceText;
+    return "weather test";
   });
 };
   
@@ -174,7 +175,7 @@ function receivedMessage(event) {
 
       default:
         sendTextMessage(senderID, weatherParser());
-        sendTextMessage(senderID, "어쩌라고");
+        // sendTextMessage(senderID, "어쩌라고");
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
