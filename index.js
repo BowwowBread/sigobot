@@ -149,6 +149,7 @@ var weatherParser = function (callback) {
   });
 };
 
+var end2endState = false;
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -170,6 +171,8 @@ function receivedMessage(event) {
       schedule: ['스케줄', '일정', '내일일정'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
       weather: ['weather', '날씨', '오늘 날씨'],
+      end2endStart: ['끝말잇기 시작', '끝말잇기'],
+      end2endFinish: ['끝말잇기 종료'],
     };
 
     // 텍스트 매칭
@@ -177,27 +180,39 @@ function receivedMessage(event) {
     var scheduleMatching = stringSimilarity.findBestMatch(messageText, detecting.schedule).bestMatch;
     var hiMatching = stringSimilarity.findBestMatch(messageText, detecting.hi).bestMatch;
     var weatherMatching = stringSimilarity.findBestMatch(messageText, detecting.weather).bestMatch;
+    var end2enStartMatching = stringSimilarity.findBestMatch(messageText, detection.end2endStart).bestMatch;
+    var end2enFinishMatching = stringSimilarity.findBestMatch(messageText, detection.end2endFinish).bestMatch;
 
-    if (hiMatching.rating > 0.5) {
-      sendTextMessage(senderID, '안녕하세요');
-    } else if (cafeMatching.rating > 0.5) {
-      schoolCafeteria(function (result) {
-        sendTextMessage(senderID, result);
-      })
-    } else if (scheduleMatching.rating > 0.5) {
-      schoolSchedule(function (result) {
-        sendTextMessage(senderID, result);
-      })
-    } else if (weatherMatching.rating > 0.5) {
-      weatherParser(function (result) {
-        sendTextMessage(senderID, "오늘의 날씨입니다\n");
-        sendTextMessage(senderID, result);
-      })
+    // 끝말잇기 상태
+    if (end2endState) {
+        sendTextMessage(senderID, end2endState.toString());
     } else {
-      sendTextMessage(senderID, messageText);
+      if (hiMatching.rating > 0.5) {
+        sendTextMessage(senderID, '안녕하세요');
+      } else if (cafeMatching.rating > 0.5) {
+        schoolCafeteria(function (result) {
+          sendTextMessage(senderID, result);
+        })
+      } else if (scheduleMatching.rating > 0.5) {
+        schoolSchedule(function (result) {
+          sendTextMessage(senderID, result);
+        })
+      } else if (weatherMatching.rating > 0.5) {
+        weatherParser(function (result) {
+          sendTextMessage(senderID, "오늘의 날씨입니다\n");
+          sendTextMessage(senderID, result);
+        })
+      } else if (end2endStartMatching.rating > 0.7) {
+        sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
+        end2endState = true;
+      } else if (end2endFinishMatching.rating > 0.7) {
+        end2endState = false;        
+        sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
+      } else {
+        sendTextMessage(senderID, messageText);
+      }
     }
   }
-
 }
 
 function sendGenericMessage(recipientId, messageText) {
