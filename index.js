@@ -150,6 +150,7 @@ var weatherParser = function (callback) {
 };
 
 var end2endState = false;
+
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -185,7 +186,13 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     if (end2endState) {
-        sendTextMessage(senderID, end2endState.toString());
+      sendTextMessage(senderID, end2endState.toString());
+      if (end2endFinishMatching.rating > 0.7) {
+        end2endState = false;
+        sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
+      } else {
+
+      }
     } else {
       if (hiMatching.rating > 0.5) {
         sendTextMessage(senderID, '안녕하세요');
@@ -203,11 +210,8 @@ function receivedMessage(event) {
           sendTextMessage(senderID, result);
         })
       } else if (end2endStartMatching.rating > 0.7) {
+        end2endState = true;        
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
-        end2endState = true;
-      } else if (end2endFinishMatching.rating > 0.7) {
-        end2endState = false;        
-        sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
         sendTextMessage(senderID, messageText);
       }
