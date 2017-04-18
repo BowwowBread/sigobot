@@ -127,7 +127,7 @@ var schoolSchedule = function (callback) {
     });
 
     if (message != '') {
-      callback(timeMonth+'월 일정입니다');    
+      callback(timeMonth + '월 일정입니다');
       callback(message);
     } else {
       callback(timeMonth + "월 일정이 없습니다");
@@ -180,20 +180,18 @@ function receivedMessage(event) {
 
     if (hiMatching.rating > 0.5) {
       sendTextMessage(senderID, '안녕하세요');
-    }
-    if (cafeMatching.rating > 0.5) {
+    } else if (cafeMatching.rating > 0.5) {
       schoolCafeteria(function (result) {
         sendTextMessage(senderID, result);
       })
-    }
-    if (scheduleMatching.rating > 0.5) {
+    } else if (scheduleMatching.rating > 0.5) {
       schoolSchedule(function (result) {
         sendTextMessage(senderID, result);
       })
-    }
-    if (weatherMatching.rating > 0.5) {
+    } else if (weatherMatching.rating > 0.5) {
       weatherParser(function (result) {
-        sendTextMessage(senderID, "오늘의 날씨는 " + result);
+        sendTextMessage(senderID, "오늘의 날씨입니다\n");
+        sendTextMessage(senderID, result);
       })
     } else {
       sendTextMessage(senderID, messageText);
