@@ -180,8 +180,8 @@ function receivedMessage(event) {
     var scheduleMatching = stringSimilarity.findBestMatch(messageText, detecting.schedule).bestMatch;
     var hiMatching = stringSimilarity.findBestMatch(messageText, detecting.hi).bestMatch;
     var weatherMatching = stringSimilarity.findBestMatch(messageText, detecting.weather).bestMatch;
-    var end2enStartMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endStart).bestMatch;
-    var end2enFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
+    var end2endStartMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endStart).bestMatch;
+    var end2endFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
 
     // 끝말잇기 상태
     if (end2endState) {
