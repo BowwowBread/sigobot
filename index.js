@@ -4,7 +4,6 @@ const request = require('request')
 const app = express()
 const stringSimilarity = require('string-similarity')
 const cheerio = require('cheerio')
-const child = require('child_process').exec;
 
 const token = process.env.FB_VERIFY_TOKEN
 const access = process.env.FB_ACCESS_TOKEN
