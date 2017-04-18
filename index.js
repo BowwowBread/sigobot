@@ -49,15 +49,12 @@ app.post('/webhook', function (req, res) {
 });
 
 // 학교 급식
-var schoolCafeteria = function (chat, callback) {
+var schoolCafeteria = function (callback) {
 
   // 현재 날짜
   var time = new Date();
   var timeNow = time.getFullYear() + '' + ("0" + (time.getMonth() + 1)).slice(-2); // 결과 201701
   var timeDay = time.getDate();
-  if (chat.indexOf("내일") != -1) {
-    timeDay += 1;
-  }
 
   var url = "http://stu.sen.go.kr/sts_sci_md00_001.do?schulCode=B100000599&schulCrseScCode=4&schulKndScCode=04&schMmealScCode=2&schYm={{date}}&";
   var modernUrl = url.replace('{{date}}', timeNow);
@@ -185,7 +182,7 @@ function receivedMessage(event) {
       sendTextMessage(senderID, '안녕하세요');
     }
     if (cafeMatching.rating > 0.5) {
-      schoolCafeteria(function (messageText, result) {
+      schoolCafeteria(function (result) {
         sendTextMessage(senderID, result);
       })
     }
