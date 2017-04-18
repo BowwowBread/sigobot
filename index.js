@@ -149,7 +149,16 @@ var weatherParser = function (callback) {
   });
 };
 
+var wordDB = function (word) {
+  url = "http://121.186.23.245:9997/"+word[0];
+  req = requests.get(url);
+  req = req.json();
+  index = req.length;
+  callback(index);
+}
+
 var end2endState = false;
+var use_word = {};
 
 function receivedMessage(event) {
   var senderID = event.sender.id;
@@ -191,7 +200,7 @@ function receivedMessage(event) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
-
+        sendTextMessage(senderID, wordDB(messageText.split));
       }
     } else {
       if (hiMatching.rating > 0.5) {
@@ -212,6 +221,7 @@ function receivedMessage(event) {
       } else if (end2endStartMatching.rating > 0.7) {
         end2endState = true;        
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
+
       } else {
         sendTextMessage(senderID, messageText);
       }
