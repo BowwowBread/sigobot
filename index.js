@@ -165,12 +165,12 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if (messageText) {
-
-    // If we receive a text message, check to see if it matches a keyword
-    // and send back the example. Otherwise, just echo the text we received.
-        sendTextMessage(senderID, weatherParser(function(value) {
-            return 'hihi';
-        }));
+      weatherParser(function (value) {
+        sendTextMessage(senderID, value);
+      })
+        // sendTextMessage(senderID, weatherParser(function(value) {
+        //     return 'hihi';
+        // }));
         // sendTextMessage(senderID, "어쩌라고");
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
