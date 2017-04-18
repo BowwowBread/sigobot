@@ -168,17 +168,10 @@ function receivedMessage(event) {
 
     // If we receive a text message, check to see if it matches a keyword
     // and send back the example. Otherwise, just echo the text we received.
-    switch (messageText) {
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
-
-      default:
         sendTextMessage(senderID, weatherParser(function(value) {
-            return value;
+            return 'hihi';
         }));
         // sendTextMessage(senderID, "어쩌라고");
-    }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
