@@ -145,7 +145,7 @@ var weatherParser = function (callback) {
     var text = body.substring(index, last);
     var replaceText = text.replace(/<br \/>/ig, "\n");
     // return replaceText;
-    callback("weather test"); 
+    callback(replaceText); 
   });
 };
   
