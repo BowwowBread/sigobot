@@ -173,6 +173,7 @@ function receivedMessage(event) {
         break;
 
       default:
+        sendTextMessage(senderID, weatherParser().text);
         sendTextMessage(senderID, "어쩌라고");
     }
   } else if (messageAttachments) {
