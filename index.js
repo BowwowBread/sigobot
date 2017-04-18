@@ -173,7 +173,7 @@ function receivedMessage(event) {
         break;
 
       default:
-        sendTextMessage(senderID, messageText);
+        sendTextMessage(senderID, "어쩌라고");
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
