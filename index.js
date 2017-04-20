@@ -223,6 +223,10 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
+  console.log("Received message for user %d and page %d at %d with message:",
+    senderID, recipientID, timeOfMessage);
+  console.log(JSON.stringify(message));
+
   var messageId = message.mid;
 
   var messageText = message.text;
@@ -253,6 +257,7 @@ function receivedMessage(event) {
       if (end2endFinishMatching.rating > 0.9) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
+        var end2endState = false;
         var success = true;
         var botWord;
         var userWord;
@@ -277,13 +282,14 @@ function receivedMessage(event) {
         })
       } else if (weatherMatching.rating > 0.5) {
         weatherParser(function (result) {
-          sendTextMessage(senderID, "오늘의 날씨입니다 \n" +result);
+          sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
       } else if (end2endStartMatching.rating > 0.7) {
         end2endState = true;
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
+          state = true;
           req = req;
           length = len;
           botWord = result;
