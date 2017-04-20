@@ -191,8 +191,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
             req = JSON.parse(body);
             if (req.data.length == 0) {
               sendTextMessage(senderID, '봇이 졌습니다');
-
-              var end2endState = false;
+              end2endState = false;
             } else {
               randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
               sendTextMessage(senderID, req.data[randomCount].word);
@@ -214,7 +213,6 @@ var matchWord = function (callback, wordDB, word, senderID) {
 }
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
 randomCount = parseInt(Math.random() * (random.length - 0 + 1));
-
 
 function receivedMessage(event) {
   var senderID = event.sender.id;
@@ -251,7 +249,7 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     if (end2endState) {
-      if (end2endFinishMatching.rating > 0.7) {
+      if (end2endFinishMatching.rating > 0.9) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
