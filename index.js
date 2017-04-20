@@ -257,6 +257,12 @@ function receivedMessage(event) {
       if (end2endFinishMatching.rating > 0.9) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
+        var success = true;
+        var botWord;
+        var userWord;
+        var req;
+        var length;
+        var randomCount;
       } else {
         matchWord(function (result) {
           sendTextMessage(senderID, result);
@@ -282,7 +288,6 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
-          state = true;
           req = req;
           length = len;
           botWord = result;
