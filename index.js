@@ -295,7 +295,6 @@ function receivedMessage(event) {
     }
   }
 }
-}
 
 function sendGenericMessage(recipientId, messageText) {
   // To be expanded in later sections
