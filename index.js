@@ -243,6 +243,7 @@ function receivedMessage(event) {
       help: ['help', '도움말'],
     };
 
+
     // 텍스트 매칭
     var cafeMatching = stringSimilarity.findBestMatch(messageText, detecting.cafeteria).bestMatch;
     var scheduleMatching = stringSimilarity.findBestMatch(messageText, detecting.schedule).bestMatch;
