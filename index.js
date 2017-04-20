@@ -240,6 +240,7 @@ function receivedMessage(event) {
       weather: ['weather', '날씨', '오늘 날씨'],
       end2endStart: ['끝말잇기 시작', '끝말잇기'],
       end2endFinish: ['끝말잇기 종료'],
+      help: ['help', '도움말'],
     };
 
     // 텍스트 매칭
@@ -249,6 +250,7 @@ function receivedMessage(event) {
     var weatherMatching = stringSimilarity.findBestMatch(messageText, detecting.weather).bestMatch;
     var end2endStartMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endStart).bestMatch;
     var end2endFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
+    var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
 
     // 끝말잇기 상태
     if (end2endState) {
@@ -286,6 +288,10 @@ function receivedMessage(event) {
           length = len;
           botWord = result;
         }, random[randomCount]);
+      } else if (helpMatching.rating > 0.7) {
+        sendTextMessage(senderID, "SIGO 봇 도움말입니다");
+        sendTextMessage(senderID, "급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
+        sendTextMessage(senderID, "봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");        
       } else {
         sendTextMessage(senderID, messageText);
       }
