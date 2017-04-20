@@ -281,6 +281,8 @@ function receivedMessage(event) {
       } else if (end2endStartMatching.rating > 0.7) {
         end2endState = true;
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
+        botWord = "";
+        userWord = "";
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
           state = true;
