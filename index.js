@@ -149,18 +149,78 @@ var weatherParser = function (callback) {
   });
 };
 
-var wordDB = function (word, callback) {
-  var url = "http://121.186.23.245:9997/"+word[0];
-  request(url, function(err, response, body) {
-    var req = JSON.stringify(response);
-    var index = req.length;
-    callback(index);
-  });
-}
-
 var end2endState = false;
-var use_word = {};
+var success = true;
+var botWord;
+var userWord;
+var req;
+var length;
+var randomCount;
+var wordDB = function (callback, word) {
+  request.post({
+    url: 'http://0xf.kr:2580/wordchain/next',
+    form: {
+      char: word[0]
+    }
+  }, function (err, res, body) {
+    req = JSON.parse(body);
+    randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+    callback(req.data[randomCount].word, req.data.length, req);
+  })
+}
+var matchWord = function (callback, wordDB, word) {
+  if (wordDB[wordDB.length - 1] == word[0]) {
+    request.post({
+      url: 'http://0xf.kr:2580/wordchain/next',
+      form: {
+        char: word[0]
+      }
+    }, function (err, res, body) {
+      req = JSON.parse(body);
+      for (var i = 0; i < req.data.length; i++) {
+        if (req.data[i].word === word) {
+          success = true;
+          userWord = word[word.length - 1];
+          callback('정답입니다');
+          request.post({
+            url: 'http://0xf.kr:2580/wordchain/next',
+            form: {
+              char: userWord
+            }
+          }, function (err, res, body) {
+            req = JSON.parse(body);
+            if (req.data.length == 0) {
+              sendTextMessage(senderID, '봇이 졌습니다');
 
+              var end2endState = false;
+            } else {
+              randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+              sendTextMessage(senderID, req.data[randomCount].word);
+
+              botWord = req.data[randomCount].word;
+            }
+          })
+        }
+      }
+      if (!success) {
+        success = false;
+        callback('틀림');
+      }
+    })
+  } else {
+    success = false;
+    callback('틀림');
+  }
+}
+var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
+randomCount = parseInt(Math.random() * (random.length - 0 + 1));
+wordDB(function (result, len, req) {
+  sendTextMessage(senderID, result);
+  state = true;
+  req = req;
+  length = len;
+  botWord = result;
+}, random[randomCount]);
 
 function receivedMessage(event) {
   var senderID = event.sender.id;
@@ -201,10 +261,9 @@ function receivedMessage(event) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
-        var word = messageText.split;
-        wordDB(function (word, result) {
+        matchWord(function (result) {
           sendTextMessage(senderID, result);
-        })
+        }, botWord, messageText)
       }
     } else {
       if (hiMatching.rating > 0.5) {
@@ -223,7 +282,7 @@ function receivedMessage(event) {
           sendTextMessage(senderID, result);
         })
       } else if (end2endStartMatching.rating > 0.7) {
-        end2endState = true;        
+        end2endState = true;
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
 
       } else {
