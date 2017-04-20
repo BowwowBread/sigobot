@@ -161,6 +161,7 @@ var wordDB = function (word, callback) {
 var end2endState = false;
 var use_word = {};
 
+
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
