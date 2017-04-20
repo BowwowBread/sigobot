@@ -255,7 +255,7 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     if (end2endState) {
-      if (end2endFinishMatching.rating > 1) {
+      if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
@@ -278,7 +278,7 @@ function receivedMessage(event) {
         weatherParser(function (result) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
-      } else if (end2endStartMatching.rating > 1) {
+      } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
         wordDB(function (result, len, req) {
