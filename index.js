@@ -279,7 +279,6 @@ function receivedMessage(event) {
         }, botWord, messageText, rasenderID)
       }
     } else if (end2endStartMatching.rating == 1) {
-
       sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
       wordDB(function (result, len, req) {
         sendTextMessage(senderID, result);
