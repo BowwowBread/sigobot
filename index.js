@@ -254,8 +254,21 @@ function receivedMessage(event) {
     var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
 
     // 끝말잇기 상태
-        sendTextMessage(senderID, end2endState);
-    if (end2endState) {
+    if (hiMatching.rating > 0.5) {
+      sendTextMessage(senderID, '안녕하세요');
+    } else if (cafeMatching.rating > 0.5) {
+      schoolCafeteria(function (result) {
+        sendTextMessage(senderID, result);
+      })
+    } else if (scheduleMatching.rating > 0.5) {
+      schoolSchedule(function (result) {
+        sendTextMessage(senderID, result);
+      })
+    } else if (weatherMatching.rating > 0.5) {
+      weatherParser(function (result) {
+        sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
+      })
+    } else if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
@@ -263,40 +276,26 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "끝말잇기");
         matchWord(function (result) {
           sendTextMessage(senderID, result);
-        }, botWord, messageText, senderID)
+        }, botWord, messageText, rasenderID)
       }
-    } else {
-      if (hiMatching.rating > 0.5) {
-        sendTextMessage(senderID, '안녕하세요');
-      } else if (cafeMatching.rating > 0.5) {
-        schoolCafeteria(function (result) {
-          sendTextMessage(senderID, result);
-        })
-      } else if (scheduleMatching.rating > 0.5) {
-        schoolSchedule(function (result) {
-          sendTextMessage(senderID, result);
-        })
-      } else if (weatherMatching.rating > 0.5) {
-        weatherParser(function (result) {
-          sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
-        })
-      } else if (end2endStartMatching.rating == 1) {
+    } else if (end2endStartMatching.rating == 1) {
+
+      sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
+      wordDB(function (result, len, req) {
+        sendTextMessage(senderID, result);
+        req = req;
+        length = len;
+        botWord = result;
         end2endState = true;
         success = true;
-        sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
-        wordDB(function (result, len, req) {
-          sendTextMessage(senderID, result);
-          req = req;
-          length = len;
-          botWord = result;
-        }, random[randomCount]);
-      } else if (helpMatching.rating > 0.7) {
-        sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
-      } else {
-        sendTextMessage(senderID, messageText);
-      }
+      }, random[randomCount]);
+    } else if (helpMatching.rating > 0.7) {
+      sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
+    } else {
+      sendTextMessage(senderID, messageText);
     }
   }
+}
 }
 
 function sendGenericMessage(recipientId, messageText) {
