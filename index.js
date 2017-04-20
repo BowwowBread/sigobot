@@ -205,12 +205,12 @@ var matchWord = function (callback, wordDB, word, senderID) {
       }
       if (!success) {
         success = false;
-        callback('틀림');
+        callback('단어가 없습니다');
       }
     })
   } else {
     success = false;
-    callback('틀림');
+    callback('다른 단어를 입력해주세요');
   }
 }
 
