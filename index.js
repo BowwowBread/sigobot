@@ -254,11 +254,13 @@ function receivedMessage(event) {
     var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
 
     // 끝말잇기 상태
+        sendTextMessage(senderID, end2endState);
     if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
+        sendTextMessage(senderID, "끝말잇기");
         matchWord(function (result) {
           sendTextMessage(senderID, result);
         }, botWord, messageText, senderID)
