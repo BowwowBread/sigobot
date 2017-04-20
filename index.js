@@ -156,6 +156,7 @@ var userWord;
 var req;
 var length;
 var randomCount;
+
 var wordDB = function (callback, word) {
   request.post({
     url: 'http://0xf.kr:2580/wordchain/next',
@@ -168,6 +169,7 @@ var wordDB = function (callback, word) {
     callback(req.data[randomCount].word, req.data.length, req);
   })
 }
+
 var matchWord = function (callback, wordDB, word, senderID) {
   if (wordDB[wordDB.length - 1] == word[0]) {
     request.post({
@@ -211,6 +213,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
     callback('틀림');
   }
 }
+
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
 randomCount = parseInt(Math.random() * (random.length - 0 + 1));
 
