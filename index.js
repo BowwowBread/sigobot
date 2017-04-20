@@ -275,8 +275,7 @@ function receivedMessage(event) {
         })
       } else if (weatherMatching.rating > 0.5) {
         weatherParser(function (result) {
-          sendTextMessage(senderID, "오늘의 날씨입니다\n");
-          sendTextMessage(senderID, result);
+          sendTextMessage(senderID, "오늘의 날씨입니다 \n" +result);
         })
       } else if (end2endStartMatching.rating > 0.7) {
         end2endState = true;
@@ -289,9 +288,7 @@ function receivedMessage(event) {
           botWord = result;
         }, random[randomCount]);
       } else if (helpMatching.rating > 0.7) {
-        sendTextMessage(senderID, "SIGO 봇 도움말입니다");
-        sendTextMessage(senderID, "급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
-        sendTextMessage(senderID, "봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");        
+        sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
       } else {
         sendTextMessage(senderID, messageText);
       }
