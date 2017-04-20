@@ -238,7 +238,7 @@ function receivedMessage(event) {
       schedule: ['스케줄', '일정', '내일일정'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
       weather: ['weather', '날씨', '오늘 날씨'],
-      end2endStart: ['끝말잇기 시작', '끝말잇기'],
+      end2endStart: ['끝말잇기 시작'],
       end2endFinish: ['끝말잇기 종료'],
       help: ['help', '도움말'],
     };
@@ -255,7 +255,7 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     if (end2endState) {
-      if (end2endFinishMatching.rating > 0.9) {
+      if (end2endFinishMatching.rating > 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else {
@@ -278,11 +278,9 @@ function receivedMessage(event) {
         weatherParser(function (result) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
-      } else if (end2endStartMatching.rating > 0.7) {
+      } else if (end2endStartMatching.rating > 1) {
         end2endState = true;
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
-        botWord = "";
-        userWord = "";
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
           state = true;
