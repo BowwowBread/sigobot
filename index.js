@@ -197,7 +197,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
             } else {
               randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
               sendTextMessage(senderID, wordDB);
-              sendTextMessage(senderID, word);              
+              sendTextMessage(senderID, word);
               sendTextMessage(senderID, req.data[randomCount].word);
 
               botWord = req.data[randomCount].word;
@@ -212,8 +212,8 @@ var matchWord = function (callback, wordDB, word, senderID) {
     })
   } else {
     success = false;
-                  sendTextMessage(senderID, wordDB);
-              sendTextMessage(senderID, word);     
+    sendTextMessage(senderID, wordDB);
+    sendTextMessage(senderID, word);
     callback('다른 단어를 입력해주세요');
   }
 }
@@ -262,8 +262,8 @@ function receivedMessage(event) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
-        
-      } else if (!(end2endFinishMatching.rating == 1)){
+
+      } else if (!(end2endFinishMatching.rating == 1)) {
         matchWord(function (result) {
           sendTextMessage(senderID, result);
         }, botWord, messageText, senderID)
@@ -286,6 +286,11 @@ function receivedMessage(event) {
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
         success = true;
+        botWord = "";
+        userWord = "";
+        req = "";
+        length = "";
+        randomCount = "";
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
