@@ -196,6 +196,8 @@ var matchWord = function (callback, wordDB, word, senderID) {
               end2endState = false;
             } else {
               randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+              sendTextMessage(senderID, wordDB);
+              sendTextMessage(senderID, word);              
               sendTextMessage(senderID, req.data[randomCount].word);
 
               botWord = req.data[randomCount].word;
