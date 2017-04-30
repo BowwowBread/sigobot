@@ -258,6 +258,7 @@ function receivedMessage(event) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
+        
       } else if (!(end2endFinishMatching.rating == 1)){
         matchWord(function (result) {
           sendTextMessage(senderID, result);
