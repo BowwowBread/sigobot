@@ -212,6 +212,8 @@ var matchWord = function (callback, wordDB, word, senderID) {
     })
   } else {
     success = false;
+                  sendTextMessage(senderID, wordDB);
+              sendTextMessage(senderID, word);     
     callback('다른 단어를 입력해주세요');
   }
 }
