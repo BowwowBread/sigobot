@@ -200,10 +200,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
               botWord = req.data[randomCount].word;
             }
           })
-        } else {
-          success = false;
-          callback("단어가 없어요");
-        }
+        } 
       }
       if (!success) {
         success = false;
