@@ -194,6 +194,11 @@ var matchWord = function (callback, wordDB, word, senderID) {
             if (req.data.length == 0) {
               sendTextMessage(senderID, '내가 졌다 ㅠㅠ');
               end2endState = false;
+              success = true;
+              botWord = "";
+              userWord = "";
+              req = "";
+              length = "";
             } else {
               randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
               sendTextMessage(senderID, req.data[randomCount].word);
