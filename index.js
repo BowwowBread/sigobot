@@ -205,7 +205,10 @@ var matchWord = function (callback, wordDB, word, senderID) {
               botWord = req.data[randomCount].word;
             }
           })
-        } 
+          break;
+        } else {
+          success = false;
+        }
       }
       if (!success) {
         success = false;
