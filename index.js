@@ -183,7 +183,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
         if (req.data[i].word === word) {
           success = true;
           userWord = word[word.length - 1];
-          callback('정답입니다');
+          callback('정답');
           request.post({
             url: 'http://0xf.kr:2580/wordchain/next',
             form: {
@@ -192,7 +192,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
           }, function (err, res, body) {
             req = JSON.parse(body);
             if (req.data.length == 0) {
-              sendTextMessage(senderID, '봇이 졌습니다');
+              sendTextMessage(senderID, '내가 졌다 ㅠㅠ');
               end2endState = false;
             } else {
               randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
@@ -200,16 +200,19 @@ var matchWord = function (callback, wordDB, word, senderID) {
               botWord = req.data[randomCount].word;
             }
           })
+        } else {
+          success = false;
+          callback("단어가 없어요");
         }
       }
       if (!success) {
         success = false;
-        callback('단어가 없습니다');
+        callback('단어가 없어요');
       }
     })
   } else {
     success = false;
-    callback('다른 단어를 입력해주세요');
+    callback('뗑');
   }
 }
 
