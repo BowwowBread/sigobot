@@ -280,21 +280,21 @@ function receivedMessage(event) {
       if (hiMatching.rating > 0.5) {
         sendTextMessage(senderID, '안녕하세요');
       } else if (cafeMatching.rating > 0.5) {
-        schoolCafeteria(function (result) {
-          sendTextMessage(senderID, result);
-        })
-      } else if (scheduleMatching.rating > 0.5) {
         if (messageText.match('내일')) {
           todayState = false;
-          schoolSchedule(function (result, todayState) {
+          schoolCafeteria(function (result, todayState) {
             sendTextMessage(senderID, result);
           })
         } else {
           todayState = true;
-          schoolSchedule(function (result, todayState) {
+          schoolCafeteria(function (result, todayState) {
             sendTextMessage(senderID, result);
           })
         }
+      } else if (scheduleMatching.rating > 0.5) {
+        schoolSchedule(function (result, todayState) {
+          sendTextMessage(senderID, result);
+        })
       } else if (weatherMatching.rating > 0.5) {
         weatherParser(function (result) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
