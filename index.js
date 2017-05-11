@@ -54,12 +54,20 @@ var schoolCafeteria = function (callback, todayState) {
   // 현재 날짜
   var time = new Date();
   var timeNow = time.getFullYear() + '' + ("0" + (time.getMonth() + 1)).slice(-2); // 결과 201701
-  if (todayState) {
-    var timeDay = time.getDate() + 1;
+  var hour = time.getHours();
+  if (hour >= 9) {
+    if (todayState) {
+      var timeDay = time.getDate() + 1;
+    } else {
+      var timeDay = time.getDate() + 2;
+    }
   } else {
-    var timeDay = time.getDate() + 2;
+    if (todayState) {
+      var timeDay = time.getDate();
+    } else {
+      var timeDay = time.getDate() + 1;
+    }
   }
-
   var url = "http://stu.sen.go.kr/sts_sci_md00_001.do?schulCode=B100000599&schulCrseScCode=4&schulKndScCode=04&schMmealScCode=2&schYm={{date}}&";
   var modernUrl = url.replace('{{date}}', timeNow);
 
@@ -246,7 +254,7 @@ function receivedMessage(event) {
 
   if (messageText) {
     var detecting = {
-      cafeteria: ['급식', '점심', '오늘점심'],
+      cafeteria: ['급식', '점심', '오늘점심', '내일급식'],
       schedule: ['스케줄', '일정'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
       weather: ['weather', '날씨', '오늘 날씨'],
