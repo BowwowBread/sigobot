@@ -288,6 +288,7 @@ function receivedMessage(event) {
         } else {
           todayState = true;
           schoolCafeteria(function (result, todayState) {
+            sendTextMessage(senderID, messageText);
             sendTextMessage(senderID, result);
           }, todayState)
         }
