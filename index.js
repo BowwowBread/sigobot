@@ -282,14 +282,14 @@ function receivedMessage(event) {
       } else if (cafeMatching.rating > 0.5) {
         if (messageText.match('내일')) {
           todayState = false;
-          schoolCafeteria(function (result, todayState) {
+          schoolCafeteria(function (result) {
             sendTextMessage(senderID, result);
-          })
+          }, todayState)
         } else {
           todayState = true;
           schoolCafeteria(function (result, todayState) {
             sendTextMessage(senderID, result);
-          })
+          }, todayState)
         }
       } else if (scheduleMatching.rating > 0.5) {
         schoolSchedule(function (result, todayState) {
