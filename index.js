@@ -49,12 +49,16 @@ app.post('/webhook', function (req, res) {
 });
 
 // 학교 급식
-var schoolCafeteria = function (callback) {
+var schoolCafeteria = function (callback, todayState) {
 
   // 현재 날짜
   var time = new Date();
   var timeNow = time.getFullYear() + '' + ("0" + (time.getMonth() + 1)).slice(-2); // 결과 201701
-  var timeDay = time.getDate() + 1;
+  if (todayState) {
+    var timeDay = time.getDate() + 1;
+  } else {
+    var timeDay = time.getDate() + 2;
+  }
 
   var url = "http://stu.sen.go.kr/sts_sci_md00_001.do?schulCode=B100000599&schulCrseScCode=4&schulKndScCode=04&schMmealScCode=2&schYm={{date}}&";
   var modernUrl = url.replace('{{date}}', timeNow);
@@ -156,6 +160,7 @@ var userWord;
 var req;
 var length;
 var randomCount;
+var todayState = true;
 
 var wordDB = function (callback, word) {
   request.post({
@@ -242,7 +247,7 @@ function receivedMessage(event) {
   if (messageText) {
     var detecting = {
       cafeteria: ['급식', '점심', '오늘점심'],
-      schedule: ['스케줄', '일정', '내일일정'],
+      schedule: ['스케줄', '일정'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
       weather: ['weather', '날씨', '오늘 날씨'],
       end2endStart: ['끝말잇기 시작'],
@@ -279,9 +284,17 @@ function receivedMessage(event) {
           sendTextMessage(senderID, result);
         })
       } else if (scheduleMatching.rating > 0.5) {
-        schoolSchedule(function (result) {
-          sendTextMessage(senderID, result);
-        })
+        if (messageText.match('내일')) {
+          todayState = false;
+          schoolSchedule(function (result, todayState) {
+            sendTextMessage(senderID, result);
+          })
+        } else {
+          todayState = true;
+          schoolSchedule(function (result, todayState) {
+            sendTextMessage(senderID, result);
+          })
+        }
       } else if (weatherMatching.rating > 0.5) {
         weatherParser(function (result) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
