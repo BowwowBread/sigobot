@@ -56,7 +56,6 @@ app.listen(app.get('port'), function () {
  * Message
  */
 
-
 // 학교 급식
 var schoolCafeteria = function (callback, todayState) {
 
