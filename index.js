@@ -357,6 +357,7 @@ function sendTextMessage(recipientId, messageText) {
     }
   };
 
+
   callSendAPI(messageData);
 }
 function callSendAPI(messageData) {
