@@ -341,7 +341,6 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
       } else if (postMatching.rating > 0.5) {
         sendTextMessage(senderID, "게시물 게시");
-        postToPage('hello fb-page world');
       } else {
         sendTextMessage(senderID, messageText);
       }
@@ -394,14 +393,3 @@ function callSendAPI(messageData) {
 /**
  * Page post
  */
-
-function postToPage(msg) {
-  FB.api('/499867256804339/feed', 'post', {
-      message: msg,
-      access_token: access
-    },
-    function (res) {
-      console.log(res)
-    }
-  )
-}
