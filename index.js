@@ -273,7 +273,6 @@ function receivedMessage(event) {
       end2endStart: ['끝말잇기 시작'],
       end2endFinish: ['끝말잇기 종료'],
       help: ['help', '도움말'],
-      post: ['게시'],
     };
 
 
@@ -285,7 +284,6 @@ function receivedMessage(event) {
     var end2endStartMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endStart).bestMatch;
     var end2endFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
     var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
-    var postMatching = stringSimilarity.findBestMatch(messageText, detecting.post).bestMatch;
 
     // 끝말잇기 상태
     if (end2endState) {
@@ -304,8 +302,7 @@ function receivedMessage(event) {
       } else if (cafeMatching.rating > 0.5) {
         if (messageText.match('내일')) {
           todayState = false;
-          schoolCafeteria(function (result) {
-            ''
+          schoolCafeteria(function (result) {''
             sendTextMessage(senderID, result);
           }, todayState)
         } else {
@@ -339,8 +336,6 @@ function receivedMessage(event) {
         }, random[randomCount]);
       } else if (helpMatching.rating > 0.7) {
         sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
-      } else if (postMatching.rating > 0.5) {
-        sendTextMessage(senderID, "게시물 게시");
       } else {
         sendTextMessage(senderID, messageText);
       }
@@ -365,7 +360,6 @@ function sendTextMessage(recipientId, messageText) {
 
   callSendAPI(messageData);
 }
-
 function callSendAPI(messageData) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
@@ -393,3 +387,4 @@ function callSendAPI(messageData) {
 /**
  * Page post
  */
+
