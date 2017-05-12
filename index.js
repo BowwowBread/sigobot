@@ -8,6 +8,29 @@ const cheerio = require('cheerio');
 const token = process.env.FB_VERIFY_TOKEN
 const access = process.env.FB_ACCESS_TOKEN
 
+/**
+ * facebook SDK 
+ */
+window.fbAsyncInit = function () {
+  FB.init({
+    appId: '499867256804339',
+    xfbml: true,
+    version: 'v2.9'
+  });
+  FB.AppEvents.logPageView();
+};
+
+(function (d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {
+    return;
+  }
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
 app.set('port', (process.env.PORT || 5000))
 
 app.use(bodyParser.urlencoded({
@@ -47,6 +70,15 @@ app.post('/webhook', function (req, res) {
     res.sendStatus(200);
   }
 });
+
+app.listen(app.get('port'), function () {
+  console.log('running on port', app.get('port'))
+})
+
+/**
+ * Message
+ */
+
 
 // 학교 급식
 var schoolCafeteria = function (callback, todayState) {
@@ -170,6 +202,7 @@ var length;
 var randomCount;
 var todayState = true;
 
+// 단어사전
 var wordDB = function (callback, word) {
   request.post({
     url: 'http://0xf.kr:2580/wordchain/next',
@@ -183,6 +216,7 @@ var wordDB = function (callback, word) {
   })
 }
 
+// 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
   if (wordDB[wordDB.length - 1] == word[0]) {
     request.post({
@@ -237,6 +271,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
 randomCount = parseInt(Math.random() * (random.length - 0 + 1));
 
+// 메세지 수신
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -261,6 +296,7 @@ function receivedMessage(event) {
       end2endStart: ['끝말잇기 시작'],
       end2endFinish: ['끝말잇기 종료'],
       help: ['help', '도움말'],
+      post: ['게시'],
     };
 
 
@@ -272,6 +308,7 @@ function receivedMessage(event) {
     var end2endStartMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endStart).bestMatch;
     var end2endFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
     var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
+    var postMatching = stringSimilarity.findBestMatch(messageText, detecting.post).bestMatch;
 
     // 끝말잇기 상태
     if (end2endState) {
@@ -291,6 +328,7 @@ function receivedMessage(event) {
         if (messageText.match('내일')) {
           todayState = false;
           schoolCafeteria(function (result) {
+            ''
             sendTextMessage(senderID, result);
           }, todayState)
         } else {
@@ -324,6 +362,9 @@ function receivedMessage(event) {
         }, random[randomCount]);
       } else if (helpMatching.rating > 0.7) {
         sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
+      } else if (postMatching.rating > 0.5) {
+        sendTextMessage(senderID, "게시물 게시");
+        postToPage('hello fb-page world');
       } else {
         sendTextMessage(senderID, messageText);
       }
@@ -335,6 +376,7 @@ function sendGenericMessage(recipientId, messageText) {
   // To be expanded in later sections
 }
 
+// 메세지 발신
 function sendTextMessage(recipientId, messageText) {
   var messageData = {
     recipient: {
@@ -371,6 +413,18 @@ function callSendAPI(messageData) {
     }
   });
 }
-app.listen(app.get('port'), function () {
-  console.log('running on port', app.get('port'))
-})
+
+/**
+ * Page post
+ */
+
+function postToPage(msg) {
+  FB.api('/499867256804339/feed', 'post', {
+      message: msg,
+      access_token: access
+    },
+    function (res) {
+      console.log(res)
+    }
+  )
+}
