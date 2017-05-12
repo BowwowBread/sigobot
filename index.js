@@ -48,9 +48,7 @@ app.post('/webhook', function (req, res) {
   }
 });
 
-app.listen(app.get('port'), function () {
-  console.log('running on port', app.get('port'))
-})
+
 
 /**
  * Message
@@ -383,8 +381,6 @@ function callSendAPI(messageData) {
     }
   });
 }
-
-/**
- * Page post
- */
-
+app.listen(app.get('port'), function () {
+  console.log('running on port', app.get('port'))
+})
