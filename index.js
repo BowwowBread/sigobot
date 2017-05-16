@@ -327,7 +327,7 @@ function receivedMessage(event) {
           });
           let length = idData.length;
           for(var i = 0; i <length; i++) {
-          sendTextMessage(senderID, "id : "+idData[i].id);
+          sendTextMessage(senderID, "id : "+ i +idData[i].id);
           }
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
