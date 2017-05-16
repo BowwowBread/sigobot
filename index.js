@@ -324,7 +324,7 @@ function receivedMessage(event) {
           sendTextMessage(senderID, "ID : "+senderID);
           idData.push({
             id: senderID,
-            count: 1++,
+            count: 1,
           });
           sendTextMessage(senderID, "count : "+idData[0].id);
       } else if (end2endStartMatching.rating == 1) {
