@@ -360,14 +360,15 @@ function receivedMessage(event) {
         length = "";
         randomCount = parseInt(Math.random() * (random.length - 0 + 1));
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
+        sendTextMessage(senderID, userWord);
+        sendTextMessage(senderID, botWord);  
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
           req = req;
           length = len;
           botWord = result;
         }, random[randomCount]);
-          sendTextMessage(senderID, userWord);
-          sendTextMessage(senderID, botWord);          
+        
       } else if (helpMatching.rating > 0.7) {
         sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
       } else {
