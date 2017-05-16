@@ -321,15 +321,20 @@ function receivedMessage(event) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
       } else if (infoMatching.rating > 0.5) {
-          idData.push({
-            id: senderID,
-            recid: recipientID,
-          });
-          let length = idData.length;
-          for(var i = 0; i <length; i++) {
-          sendTextMessage(senderID, "senderid : "+ i +" " + idData[i].id);
-          sendTextMessage(senderID, "recipientid : "+ i +" " +idData[i].recid);          
+        let length = inData.length;
+        for(var i = 0; i < length; i ++) {
+          if(idData[i].id === senderID) {
+            sendTextMessage(senderID, "true");
+            break;
           }
+        }
+        idData.push({
+          id: senderID,
+        });
+        length = idData.length;
+        for (var i = 0; i < length; i++) {
+          sendTextMessage(senderID, "senderid : " + i + " " + idData[i].id);
+        }
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
         success = true;
