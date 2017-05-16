@@ -265,7 +265,7 @@ function receivedMessage(event) {
   if (messageText) {
     var detecting = {
       cafeteria: ['급식', '점심', '오늘점심', '내일급식'],
-      schedule: ['스케줄', '일정'],
+      schedule: ['스케줄', '일정', '달력'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
       weather: ['weather', '날씨', '오늘 날씨'],
       end2endStart: ['끝말잇기 시작'],
@@ -372,7 +372,7 @@ function receivedMessage(event) {
             id: senderID,
             state: true,
           });
-        } else {
+        } else if(!endFirstState) {
           idData[i].state = true;
         }
         end2endState = true;        
