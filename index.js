@@ -325,7 +325,7 @@ function receivedMessage(event) {
         let firstState = false;
         for (var i = 0; i < length; i++) {
           if (idData[i].id === senderID) {
-            if (idata[i].count === 3) {
+            if (idData[i].count === 3) {
               sendTextMessage(senderID, "true");
               idData[i].count = 1;
               sendTextMessage(senderID, "id :" + idData[i].id);
