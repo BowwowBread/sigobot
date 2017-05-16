@@ -270,6 +270,7 @@ function receivedMessage(event) {
       end2endStart: ['끝말잇기 시작'],
       end2endFinish: ['끝말잇기 종료'],
       help: ['help', '도움말'],
+      info: ['내정보'],
     };
 
 
@@ -281,6 +282,7 @@ function receivedMessage(event) {
     var end2endStartMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endStart).bestMatch;
     var end2endFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
     var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
+    var infoMatching = stringSimilarity.findBestMatch(messageText, detecting.info).bestMatch;
 
     // 끝말잇기 상태
     if (end2endState) {
@@ -299,7 +301,8 @@ function receivedMessage(event) {
       } else if (cafeMatching.rating > 0.5) {
         if (messageText.match('내일')) {
           todayState = false;
-          schoolCafeteria(function (result) {''
+          schoolCafeteria(function (result) {
+            ''
             sendTextMessage(senderID, result);
           }, todayState)
         } else {
@@ -316,6 +319,8 @@ function receivedMessage(event) {
         weatherParser(function (result) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
+      } else if (infoMatching.rating > 0.5) {
+          sendTextMessage(senderID, "ID : "+senderID);
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
         success = true;
@@ -358,6 +363,7 @@ function sendTextMessage(recipientId, messageText) {
 
   callSendAPI(messageData);
 }
+
 function callSendAPI(messageData) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
