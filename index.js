@@ -292,10 +292,11 @@ function receivedMessage(event) {
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID && idData[i].state === true) {
         end2endState = true;
+        endFirstState = false;
         break;
       }
     }
-    sendTextMessage(senderID, end2endState);    
+    sendTextMessage(senderID, end2endState);
     if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
@@ -332,14 +333,8 @@ function receivedMessage(event) {
       } else if (infoMatching.rating > 0.5) {
         sendTextMessage(senderID, senderID);
         sendTextMessage(senderID, end2endState);
-        sendTextMessage(senderID, endFirstState);                        
+        sendTextMessage(senderID, endFirstState);
       } else if (end2endStartMatching.rating == 1) {
-        for (var i = 0; i < length; i++) {
-          if (idData[i].state) {
-            endFirstState = false;
-            break;
-          }
-        }
         if (endFirstState) {
           idData.push({
             id: senderID,
