@@ -291,11 +291,12 @@ function receivedMessage(event) {
     var i = 0;
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID && idData[i].state) {
+          sendTextMessage(senderID, "끝말잇기 이용중");        
           end2endState = true;
         break;
       }
     }
-    if (end2endState) {
+    if (end2endState && !endFirstState) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
