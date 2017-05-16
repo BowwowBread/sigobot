@@ -292,7 +292,6 @@ function receivedMessage(event) {
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID) {
         end2endState = true;
-        sendTextMessage(senderID,"끝말잇기 이용중");        
         break;
       }
     }
@@ -300,7 +299,6 @@ function receivedMessage(event) {
       if (end2endFinishMatching.rating == 1) {
         idData[i].state = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
-
       } else if (!(end2endFinishMatching.rating == 1)) {
         matchWord(function (result) {
           sendTextMessage(senderID, result);
