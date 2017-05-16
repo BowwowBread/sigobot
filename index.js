@@ -297,7 +297,7 @@ function receivedMessage(event) {
     }
     if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
-        idData[i].state = false;
+        end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
       } else if (!(end2endFinishMatching.rating == 1)) {
         matchWord(function (result) {
