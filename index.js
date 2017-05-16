@@ -328,7 +328,7 @@ function receivedMessage(event) {
             sendTextMessage(senderID, "true");
             idData[i].count++;
             sendTextMessage(senderID, "id :" + idData[i].id);
-            sendTextMessage(senderID, "id :" + idData[i].count);   
+            sendTextMessage(senderID, "count :" + idData[i].count);   
             sendTextMessage(senderID, length);         
             break;
           } 
