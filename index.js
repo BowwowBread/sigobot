@@ -321,13 +321,12 @@ function receivedMessage(event) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
       } else if (infoMatching.rating > 0.5) {
-          sendTextMessage(senderID, "ID : "+senderID);
           idData.push({
             id: senderID,
           });
           let length = idData.length;
           for(var i = 0; i <length; i++) {
-          sendTextMessage(senderID, "id : "+ i +idData[i].id);
+          sendTextMessage(senderID, "id : "+ i +" " +idData[i].id);
           }
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
