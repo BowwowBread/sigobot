@@ -324,9 +324,11 @@ function receivedMessage(event) {
           sendTextMessage(senderID, "ID : "+senderID);
           idData.push({
             id: senderID,
-            count: 1,
           });
-          sendTextMessage(senderID, "count : "+idData[0].id);
+          let length = idData.length;
+          for(var i = 0; i <length; i++) {
+          sendTextMessage(senderID, "id : "+idData[i].id);
+          }
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
         success = true;
