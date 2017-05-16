@@ -337,6 +337,7 @@ function receivedMessage(event) {
         for (var i = 0; i<length; i++) {
           if(idData[i].id != senderID) {
             endFirstState = true;
+            break;
           }
         }
         if (endFirstState) {
@@ -347,6 +348,7 @@ function receivedMessage(event) {
           sendTextMessage(senderID, "유저등록");
         } else if (!endFirstState) {
           idData[i].state = true;
+          sendTextMessage(senderID, "등록된 유저");
         }
         end2endState = true;
         success = true;
