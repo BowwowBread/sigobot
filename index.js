@@ -302,6 +302,8 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
         idData[i].state = false;
       } else if (!(end2endFinishMatching.rating == 1)) {
+                  sendTextMessage(senderID, botWord);
+          sendTextMessage(senderID, messageText);  
         matchWord(function (result) {
           sendTextMessage(senderID, result);
         }, botWord, messageText, senderID)
@@ -360,8 +362,6 @@ function receivedMessage(event) {
         length = "";
         randomCount = parseInt(Math.random() * (random.length - 0 + 1));
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
-        sendTextMessage(senderID, userWord);
-        sendTextMessage(senderID, botWord);  
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
           req = req;
