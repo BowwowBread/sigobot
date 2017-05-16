@@ -322,18 +322,23 @@ function receivedMessage(event) {
         })
       } else if (infoMatching.rating > 0.5) {
         let length = idData.length;
-        for(var i = 0; i < length; i ++) {
-          if(idData[i].id === senderID) {
-            sendTextMessage(senderID, "true");
-            break;
-          }
-        }
-        idData.push({
-          id: senderID,
-        });
-        length = idData.length;
+        let firstState = false;
         for (var i = 0; i < length; i++) {
-          sendTextMessage(senderID, "senderid : " + i + " " + idData[i].id);
+          if (idData[i].id === senderID) {
+            sendTextMessage(senderID, "true");
+            idData[i].count++;
+            sendTextMessage(senderID, "id :" + idData[i].id);
+            sendTextMessage(senderID, "id :" + idData[i].count);   
+            sendTextMessage(senderID, length);         
+            break;
+          } 
+        }
+        if (!firstState) {
+          idData.push({
+            id: senderID,
+            count: 0,
+          });
+          firstState = true;
         }
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
