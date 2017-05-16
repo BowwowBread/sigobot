@@ -167,6 +167,7 @@ var weatherParser = function (callback) {
   });
 };
 
+var end2endState = false;
 var success = true;
 var botWord;
 var userWord;
@@ -291,10 +292,11 @@ function receivedMessage(event) {
     var i = 0;
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID) {
+        end2endState = true;
         break;
       }
     }
-    if (idData[i].state) {
+    if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
         idData[i].state = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
@@ -373,6 +375,7 @@ function receivedMessage(event) {
         } else {
           idData[i].state = true;
         }
+        end2endState = true;        
         success = true;
         botWord = "";
         userWord = "";
