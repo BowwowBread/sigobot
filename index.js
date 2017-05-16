@@ -335,9 +335,11 @@ function receivedMessage(event) {
         sendTextMessage(senderID, endFirstState);
       } else if (end2endStartMatching.rating == 1) {
         for (var i = 0; i<length; i++) {
-          if(idData[i].id != senderID) {
-            endFirstState = true;
+          if(idData[i].id === senderID) {
+            endFirstState = false;
             break;
+          } else {
+            endFirstState = true;
           }
         }
         if (endFirstState) {
@@ -349,7 +351,7 @@ function receivedMessage(event) {
         } else if (!endFirstState) {
           idData[i].state = true;
           sendTextMessage(senderID, "등록된 유저");
-        }
+ㅎ        }
         end2endState = true;
         success = true;
         botWord = "";
