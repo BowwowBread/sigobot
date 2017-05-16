@@ -366,6 +366,8 @@ function receivedMessage(event) {
           length = len;
           botWord = result;
         }, random[randomCount]);
+          sendTextMessage(senderID, userWord);
+          sendTextMessage(senderID, botWord);          
       } else if (helpMatching.rating > 0.7) {
         sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
       } else {
