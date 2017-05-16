@@ -302,8 +302,8 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
         idData[i].state = false;
       } else if (!(end2endFinishMatching.rating == 1)) {
-                  sendTextMessage(senderID, botWord);
-          sendTextMessage(senderID, messageText);  
+        sendTextMessage(senderID, botWord);
+        sendTextMessage(senderID, messageText);  
         matchWord(function (result) {
           sendTextMessage(senderID, result);
         }, botWord, messageText, senderID)
@@ -364,11 +364,11 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
+          sendTextMessage(senderID, "word db");          
           req = req;
           length = len;
           botWord = result;
         }, random[randomCount]);
-        
       } else if (helpMatching.rating > 0.7) {
         sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
       } else {
