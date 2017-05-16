@@ -290,12 +290,12 @@ function receivedMessage(event) {
     let endFirstState = true;
     var i = 0;
     for (i = 0; i < length; i++) {
-      if (idData[i].id === senderID && idData[i].state) {
-        sendTextMessage(senderID, "끝말잇기 이용중");
+      if (idData[i].id === senderID && idData[i].state === true) {
         end2endState = true;
         break;
       }
     }
+    sendTextMessage(senderID, end2endState);    
     if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
