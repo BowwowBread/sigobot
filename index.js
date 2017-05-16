@@ -167,7 +167,6 @@ var weatherParser = function (callback) {
   });
 };
 
-var end2endState = false;
 var success = true;
 var botWord;
 var userWord;
@@ -286,9 +285,18 @@ function receivedMessage(event) {
     var infoMatching = stringSimilarity.findBestMatch(messageText, detecting.info).bestMatch;
 
     // 끝말잇기 상태
-    if (end2endState) {
+    let length = idData.length;
+    let endFirstState = false;
+    let endMatch = false;
+    var i = 0;
+    for (i = 0; i < length; i++) {
+      if (idData[i].id === senderID) {
+        break;
+      }
+    }
+    if (idData[i].state) {
       if (end2endFinishMatching.rating == 1) {
-        end2endState = false;
+        idData[i].state = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
 
       } else if (!(end2endFinishMatching.rating == 1)) {
@@ -303,7 +311,6 @@ function receivedMessage(event) {
         if (messageText.match('내일')) {
           todayState = false;
           schoolCafeteria(function (result) {
-            ''
             sendTextMessage(senderID, result);
           }, todayState)
         } else {
@@ -321,38 +328,51 @@ function receivedMessage(event) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
       } else if (infoMatching.rating > 0.5) {
-        let length = idData.length;
-        let firstState = false;
+        // let length = idData.length;
+        // let firstState = false;
+        // for (var i = 0; i < length; i++) {
+        //   if (idData[i].id === senderID) {
+        //     if (idData[i].count === 3) {
+        //       sendTextMessage(senderID, "true");
+        //       idData[i].count = 1;
+        //       sendTextMessage(senderID, "id :" + idData[i].id);
+        //       sendTextMessage(senderID, "count :" + idData[i].count);
+        //       sendTextMessage(senderID, length);
+        //       firstState = true;                          
+        //       break;
+        //     } else {
+        //       sendTextMessage(senderID, "true");
+        //       idData[i].count++;
+        //       sendTextMessage(senderID, "id :" + idData[i].id);
+        //       sendTextMessage(senderID, "count :" + idData[i].count);
+        //       sendTextMessage(senderID, length);
+        //       firstState = true;                          
+        //       break;
+        //     }
+        //   }
+        // }
+        // if (!firstState) {
+        //   idData.push({
+        //     id: senderID,
+        //     count: 1,
+        //   });
+        //   firstState = true;
+        // }
+      } else if (end2endStartMatching.rating == 1) {
         for (var i = 0; i < length; i++) {
           if (idData[i].id === senderID) {
-            if (idData[i].count === 3) {
-              sendTextMessage(senderID, "true");
-              idData[i].count = 1;
-              sendTextMessage(senderID, "id :" + idData[i].id);
-              sendTextMessage(senderID, "count :" + idData[i].count);
-              sendTextMessage(senderID, length);
-              firstState = true;                          
-              break;
-            } else {
-              sendTextMessage(senderID, "true");
-              idData[i].count++;
-              sendTextMessage(senderID, "id :" + idData[i].id);
-              sendTextMessage(senderID, "count :" + idData[i].count);
-              sendTextMessage(senderID, length);
-              firstState = true;                          
-              break;
-            }
+            endFirstState = false;
+            break;
           }
         }
-        if (!firstState) {
+        if (endFirstState) {
           idData.push({
             id: senderID,
-            count: 1,
+            state: true,
           });
-          firstState = true;
+        } else {
+          idData[i].state = true;
         }
-      } else if (end2endStartMatching.rating == 1) {
-        end2endState = true;
         success = true;
         botWord = "";
         userWord = "";
