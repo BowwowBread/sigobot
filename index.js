@@ -331,6 +331,7 @@ function receivedMessage(event) {
               sendTextMessage(senderID, "id :" + idData[i].id);
               sendTextMessage(senderID, "count :" + idData[i].count);
               sendTextMessage(senderID, length);
+              firstState = true;                          
               break;
             } else {
               sendTextMessage(senderID, "true");
@@ -338,6 +339,7 @@ function receivedMessage(event) {
               sendTextMessage(senderID, "id :" + idData[i].id);
               sendTextMessage(senderID, "count :" + idData[i].count);
               sendTextMessage(senderID, length);
+              firstState = true;                          
               break;
             }
           }
