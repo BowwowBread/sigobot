@@ -176,6 +176,7 @@ var length;
 var randomCount;
 var todayState = true;
 var idData = [];
+var endFirstState = true;
 
 // 단어사전
 var wordDB = function (callback, word) {
@@ -287,16 +288,14 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     let length = idData.length;
-    let endFirstState = true;
     var i = 0;
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID && idData[i].state === true) {
+        sendTextMessage(senderID, "끝말잇기 이용중");        
         end2endState = true;
-        endFirstState = false;
         break;
       }
     }
-    sendTextMessage(senderID, end2endState);
     if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
@@ -335,6 +334,11 @@ function receivedMessage(event) {
         sendTextMessage(senderID, end2endState);
         sendTextMessage(senderID, endFirstState);
       } else if (end2endStartMatching.rating == 1) {
+        for (var i = 0; i<length; i++) {
+          if(idData[i].id != senderID) {
+            endFirstState = true;
+          }
+        }
         if (endFirstState) {
           idData.push({
             id: senderID,
