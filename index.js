@@ -287,12 +287,12 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     let length = idData.length;
-    let endFirstState = false;
-    let endMatch = false;
+    let endFirstState = true;
     var i = 0;
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID) {
         end2endState = true;
+        sendTextMessage(senderID,"끝말잇기 이용중");        
         break;
       }
     }
