@@ -323,10 +323,11 @@ function receivedMessage(event) {
       } else if (infoMatching.rating > 0.5) {
           idData.push({
             id: senderID,
+            recid: recipientID,
           });
           let length = idData.length;
           for(var i = 0; i <length; i++) {
-          sendTextMessage(senderID, "id : "+ i +" " +idData[i].id);
+          sendTextMessage(senderID, "id : "+ i +" " +idData[i].id + " " +idData[i].recid);
           }
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
