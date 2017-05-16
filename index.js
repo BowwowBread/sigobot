@@ -325,18 +325,26 @@ function receivedMessage(event) {
         let firstState = false;
         for (var i = 0; i < length; i++) {
           if (idData[i].id === senderID) {
-            sendTextMessage(senderID, "true");
-            idData[i].count++;
-            sendTextMessage(senderID, "id :" + idData[i].id);
-            sendTextMessage(senderID, "count :" + idData[i].count);   
-            sendTextMessage(senderID, length);         
-            break;
-          } 
+            if (idata[i].count === 3) {
+              sendTextMessage(senderID, "true");
+              idData[i].count = 1;
+              sendTextMessage(senderID, "id :" + idData[i].id);
+              sendTextMessage(senderID, "count :" + idData[i].count);
+              sendTextMessage(senderID, length);
+            } else {
+              sendTextMessage(senderID, "true");
+              idData[i].count++;
+              sendTextMessage(senderID, "id :" + idData[i].id);
+              sendTextMessage(senderID, "count :" + idData[i].count);
+              sendTextMessage(senderID, length);
+              break;
+            }
+          }
         }
         if (!firstState) {
           idData.push({
             id: senderID,
-            count: 0,
+            count: 1,
           });
           firstState = true;
         }
