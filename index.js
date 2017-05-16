@@ -175,6 +175,7 @@ var req;
 var length;
 var randomCount;
 var todayState = true;
+var idData = [];
 
 // 단어사전
 var wordDB = function (callback, word) {
@@ -321,6 +322,11 @@ function receivedMessage(event) {
         })
       } else if (infoMatching.rating > 0.5) {
           sendTextMessage(senderID, "ID : "+senderID);
+          idData.push({
+            id: senderID,
+            count: 1++,
+          });
+          sendTextMessage(senderID, "count : "+idData[0].id);
       } else if (end2endStartMatching.rating == 1) {
         end2endState = true;
         success = true;
