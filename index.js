@@ -321,7 +321,7 @@ function receivedMessage(event) {
           sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
         })
       } else if (infoMatching.rating > 0.5) {
-        let length = inData.length;
+        let length = idData.length;
         for(var i = 0; i < length; i ++) {
           if(idData[i].id === senderID) {
             sendTextMessage(senderID, "true");
