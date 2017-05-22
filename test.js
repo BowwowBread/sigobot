@@ -40,7 +40,7 @@ var matchWord = function (callback, wordDB, word) {
     }, function (err, res, body) {
       req = JSON.parse(body);
       for (var i = 0; i < req.data.length; i++) {
-        if (req.data[i].word === word) {
+        if (req.data[i].word === wordDB) {
           success = true;
           userWord = word[word.length - 1];
           callback('정답입니다');
