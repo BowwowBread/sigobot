@@ -194,49 +194,53 @@ var wordDB = function (callback, word) {
 
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
-    request.post({
-      url: 'http://0xf.kr:2580/wordchain/next',
-      form: {
-        char: word[0]
-      }
-    }, function (err, res, body) {
-      req = JSON.parse(body);
-      for (var i = 0; i < req.data.length; i++) {
-        if (req.data[i].word === word) {
-          success = true;
-          userWord = word[word.length - 1];
-          callback('정답입니다');
-          request.post({
-            url: 'http://0xf.kr:2580/wordchain/next',
-            form: {
-              char: userWord
-            }
-          }, function (err, res, body) {
-            req = JSON.parse(body);
-            if (req.data.length == 0) {
-              sendTextMessage(senderID, '봇이 졌습니다.');
-              end2endState = false;
-              success = true;
-              botWord = "";
-              userWord = "";
-              req = "";
-              length = "";
-            } else {
-              randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
-              sendTextMessage(senderID, req.data[randomCount].word);
-              botWord = req.data[randomCount].word;
-            }
-          })
-          break;
-        } else {
-          success = false;
-        }
-      }
-      if (!success) {
-        success = false;
-        callback('단어가 없어요');
-      }
-    })
+  try {
+      request.post({
+          url: 'http://0xf.kr:2580/wordchain/next',
+          form: {
+              char: word[0]
+          }
+      }, function (err, res, body) {
+          req = JSON.parse(body);
+          for (var i = 0; i < req.data.length; i++) {
+              if (req.data[i].word === word) {
+                  success = true;
+                  userWord = word[word.length - 1];
+                  callback('정답입니다');
+                  request.post({
+                      url: 'http://0xf.kr:2580/wordchain/next',
+                      form: {
+                          char: userWord
+                      }
+                  }, function (err, res, body) {
+                      req = JSON.parse(body);
+                      if (req.data.length == 0) {
+                          sendTextMessage(senderID, '봇이 졌습니다.');
+                          end2endState = false;
+                          success = true;
+                          botWord = "";
+                          userWord = "";
+                          req = "";
+                          length = "";
+                      } else {
+                          randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+                          sendTextMessage(senderID, req.data[randomCount].word);
+                          botWord = req.data[randomCount].word;
+                      }
+                  })
+                  break;
+              } else {
+                  success = false;
+              }
+          }
+          if (!success) {
+              success = false;
+              callback('단어가 없어요');
+          }
+      })
+  } catch (e) {
+    callback("땡");
+  }
 }
 
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
