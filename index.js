@@ -232,13 +232,13 @@ var matchWord = function (callback, wordDB, word, senderID) {
                   } else {
                       success = false;
                   }
+                  if (!success) {
+                      success = false;
+                      callback('단어가 없어요');
+                  }
               }
           } catch (e) {
             callback("떙");
-          }
-          if (!success) {
-              success = false;
-              callback('단어가 없어요');
           }
       })
 }
