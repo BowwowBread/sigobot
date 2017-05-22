@@ -287,6 +287,7 @@ function receivedMessage(event) {
     // 끝말잇기 상태
     let length = idData.length;
     var i = 0;
+    end2endState = false;
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID && idData[i].state === true) {
         end2endState = true;
@@ -294,7 +295,6 @@ function receivedMessage(event) {
       }
     }
     if (end2endState) {
-      sendTextMessage(senderID, "hi");
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
