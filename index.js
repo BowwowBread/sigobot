@@ -200,8 +200,12 @@ var matchWord = function (callback, wordDB, word, senderID) {
               char: word[0]
           }
       }, function (err, res, body) {
+        if (err) {
+            callback("땡");
+            return;
+        }
           req = JSON.parse(body);
-          callback((typeof res.data).toString());
+          callback((typeof res.data.length).toString());
           for (var i = 0; i < req.data.length; i++) {
               if (req.data[i].word === word) {
                   success = true;
