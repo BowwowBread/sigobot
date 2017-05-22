@@ -201,7 +201,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
           }
       }, function (err, res, body) {
           req = JSON.parse(body);
-          callback(typeof res.data.length);
+          callback((typeof res.data).toString());
           for (var i = 0; i < req.data.length; i++) {
               if (req.data[i].word === word) {
                   success = true;
