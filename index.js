@@ -289,7 +289,6 @@ function receivedMessage(event) {
     var i = 0;
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID && idData[i].state === true) {
-        sendTextMessage(senderID, "끝말잇기 이용중");
         end2endState = true;
         break;
       }
@@ -301,8 +300,6 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
         idData[i].state = false;
       } else if (!(end2endFinishMatching.rating == 1)) {
-        sendTextMessage(senderID, "botword" + botWord);
-        sendTextMessage(senderID, "messagetext" + messageText);
         matchWord(function (result) {
           sendTextMessage(senderID, result);
         }, botWord, messageText, senderID)
@@ -348,10 +345,8 @@ function receivedMessage(event) {
             id: senderID,
             state: true,
           });
-          sendTextMessage(senderID, "유저등록");
         } else if (!endFirstState) {
           idData[i].state = true;
-          sendTextMessage(senderID, "등록된 유저");
         }
         end2endState = false;
         success = true;
@@ -363,7 +358,6 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
         wordDB(function (result, len, req) {
           sendTextMessage(senderID, result);
-          sendTextMessage(senderID, "word db");
           req = req;
           length = len;
           botWord = result;
