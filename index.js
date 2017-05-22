@@ -194,7 +194,6 @@ var wordDB = function (callback, word) {
 
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
-  try {
       request.post({
           url: 'http://0xf.kr:2580/wordchain/next',
           form: {
@@ -202,6 +201,10 @@ var matchWord = function (callback, wordDB, word, senderID) {
           }
       }, function (err, res, body) {
           req = JSON.parse(body);
+          if (typeof req.data.length == "undefined") {
+            callback("땡");
+            return;
+          }
           for (var i = 0; i < req.data.length; i++) {
               if (req.data[i].word === word) {
                   success = true;
@@ -238,9 +241,6 @@ var matchWord = function (callback, wordDB, word, senderID) {
               callback('단어가 없어요');
           }
       })
-  } catch (e) {
-    callback("땡");
-  }
 }
 
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
