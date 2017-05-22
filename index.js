@@ -194,8 +194,6 @@ var wordDB = function (callback, word) {
 
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
-      callback(wordDB);
-      callback(word);
       request.post({
           url: 'http://0xf.kr:2580/wordchain/next',
           form: {
@@ -206,8 +204,8 @@ var matchWord = function (callback, wordDB, word, senderID) {
           try {
               for (var i = 0; i < req.data.length; i++) {
                   if (req.data[i].word === word) {
-                      callback(req.data[i].word);
-                      callback(wordDB);
+                      callback("req" + req.data[i].word);
+                      callback("db" + wordDB);
                       success = true;
                       userWord = word[word.length - 1];
                       callback('정답입니다');
