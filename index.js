@@ -194,7 +194,6 @@ var wordDB = function (callback, word) {
 
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
-  if (wordDB[wordDB.length - 1] == word[0]) {
     request.post({
       url: 'http://0xf.kr:2580/wordchain/next',
       form: {
@@ -206,7 +205,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
         if (req.data[i].word === word) {
           success = true;
           userWord = word[word.length - 1];
-          callback('정답');
+          callback('정답입니다');
           request.post({
             url: 'http://0xf.kr:2580/wordchain/next',
             form: {
@@ -215,7 +214,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
           }, function (err, res, body) {
             req = JSON.parse(body);
             if (req.data.length == 0) {
-              sendTextMessage(senderID, '내가 졌다 ㅠㅠ');
+              sendTextMessage(senderID, '봇이 졌습니다.');
               end2endState = false;
               success = true;
               botWord = "";
@@ -238,10 +237,6 @@ var matchWord = function (callback, wordDB, word, senderID) {
         callback('단어가 없어요');
       }
     })
-  } else {
-    success = false;
-    callback('뗑');
-  }
 }
 
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
