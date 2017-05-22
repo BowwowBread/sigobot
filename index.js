@@ -205,8 +205,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
           req = JSON.parse(body);
           try {
               for (var i = 0; i < req.data.length; i++) {
-                  if (req.data[i].word === word) {
-                      callback(req.data[i].word);
+                  if (req.data[i].word === wordDB) {
                       success = true;
                       userWord = word[word.length - 1];
                       callback('정답입니다');
