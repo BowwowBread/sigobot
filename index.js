@@ -200,41 +200,41 @@ var matchWord = function (callback, wordDB, word, senderID) {
               char: word[0]
           }
       }, function (err, res, body) {
-        if (err) {
-            callback("땡");
-            return;
-        }
           req = JSON.parse(body);
-          for (var i = 0; i < req.data.length; i++) {
-              if (req.data[i].word === word) {
-                  success = true;
-                  userWord = word[word.length - 1];
-                  callback('정답입니다');
-                  request.post({
-                      url: 'http://0xf.kr:2580/wordchain/next',
-                      form: {
-                          char: userWord
-                      }
-                  }, function (err, res, body) {
-                      req = JSON.parse(body);
-                      if (req.data.length == 0) {
-                          sendTextMessage(senderID, '봇이 졌습니다.');
-                          end2endState = false;
-                          success = true;
-                          botWord = "";
-                          userWord = "";
-                          req = "";
-                          length = "";
-                      } else {
-                          randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
-                          sendTextMessage(senderID, req.data[randomCount].word);
-                          botWord = req.data[randomCount].word;
-                      }
-                  })
-                  break;
-              } else {
-                  success = false;
+          try {
+              for (var i = 0; i < req.data.length; i++) {
+                  if (req.data[i].word === word) {
+                      success = true;
+                      userWord = word[word.length - 1];
+                      callback('정답입니다');
+                      request.post({
+                          url: 'http://0xf.kr:2580/wordchain/next',
+                          form: {
+                              char: userWord
+                          }
+                      }, function (err, res, body) {
+                          req = JSON.parse(body);
+                          if (req.data.length == 0) {
+                              sendTextMessage(senderID, '봇이 졌습니다.');
+                              end2endState = false;
+                              success = true;
+                              botWord = "";
+                              userWord = "";
+                              req = "";
+                              length = "";
+                          } else {
+                              randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+                              sendTextMessage(senderID, req.data[randomCount].word);
+                              botWord = req.data[randomCount].word;
+                          }
+                      })
+                      break;
+                  } else {
+                      success = false;
+                  }
               }
+          } catch (e) {
+            callback("떙");
           }
           if (!success) {
               success = false;
