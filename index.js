@@ -237,6 +237,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
           success = false;
         }
       }
+      callback(": " + req.data[i].word + ", " + word + ", " + wordDB[wordDB.length - 1]);
       if(!success) {
         callback("단어가 없습니다");
       }
