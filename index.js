@@ -231,14 +231,14 @@ var matchWord = function (callback, wordDB, word, senderID) {
                       break;
                   } else {
                       success = false;
+                      callback('단어가 없어요');                      
                   }
               }
               if (!success) {
-                  success = false;
-                  callback('단어가 없어요');
+                  callback("땡");
               }
           } catch (e) {
-            callback("떙");
+            callback("땡");
           }
       })
 }
