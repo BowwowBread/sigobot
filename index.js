@@ -205,12 +205,11 @@ var matchWord = function (callback, wordDB, word, senderID) {
       try {
         for (var j = 0; j < req.data.length; j++) {
           if (req.data[j].word === word) {
-            callback(": " + req.data[j].word + ", " + word);            
             success = true;
             userWord = word[word.length - 1];
-            callback(req.data[j].score);
             idData[i].score += req.data[j].score;
             callback('정답입니다');
+            callback(req.data[j].score + "점 획득");
             request.post({
               url: 'http://0xf.kr:2580/wordchain/next',
               form: {
@@ -224,7 +223,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
                 botWord = req.data[randomCount].word;
               } else {
                 sendTextMessage(senderID, '봇이 졌습니다.');
-                sendTextMessage(senderID, idData[i].score);                        
+                sendTextMessage(senderID, "총 점수는 " + idData[i].score + "입니다.");                        
                 end2endState = false;
                 success = true;
                 botWord = "";
@@ -299,8 +298,8 @@ function receivedMessage(event) {
     if (end2endState) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
-        sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
-        sendTextMessage(senderID, idData[i].score);        
+        sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");        
+        sendTextMessage(senderID, "총 점수는 " + idData[i].score + "입니다.");        
         idData[i].state = false;
       } else if (!(end2endFinishMatching.rating == 1)) {
         matchWord(function (result) {
