@@ -194,10 +194,10 @@ var wordDB = function (callback, word) {
 
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
-  if (wordDB[wordDB.length - 1] !== word[0]) {
-    callback("땡");
-    return;
-  } else {
+  // if (wordDB[wordDB.length - 1] !== word[0]) {
+  //   callback("땡");
+  //   return;
+  // } else {
     callback(wordDB[wordDB.length - 1]);
     request.post({
       url: 'http://0xf.kr:2580/wordchain/next',
