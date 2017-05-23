@@ -224,7 +224,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
                 botWord = req.data[randomCount].word;
               } else {
                 sendTextMessage(senderID, '봇이 졌습니다.');
-                sendTextMessage(senderID, idData[i].score);                        
+                sendTextMessage(senderID, "총 점수는 " + idData[i].score + "입니다.");                        
                 end2endState = false;
                 success = true;
                 botWord = "";
