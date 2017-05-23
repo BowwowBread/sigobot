@@ -201,6 +201,10 @@ var matchWord = function (callback, wordDB, word, senderID) {
       char: wordDB[wordDB.length - 1]
     }
   }, function (err, res, body) {
+    if (err) {
+      callback("오류");
+      return;
+    }
     req = JSON.parse(body);
     try {
       for (var j = 0; j < req.data.length; j++) {
