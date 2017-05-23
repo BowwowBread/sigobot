@@ -197,54 +197,56 @@ var matchWord = function (callback, wordDB, word, senderID) {
   if (wordDB[wordDB.length - 1] !== word[0]) {
     callback("땡");
     return;
-  }
-  request.post({
-    url: 'http://0xf.kr:2580/wordchain/next',
-    form: {
-      char: wordDB[wordDB.length - 1]
-    }
-  }, function (err, res, body) {
-    req = JSON.parse(body);
-    try {
-      for (var i = 0; i < req.data.length; i++) {
-        if (req.data[i].word === word) {
-          success = true;
-          userWord = word[word.length - 1];
-          callback('정답입니다');
-          request.post({
-            url: 'http://0xf.kr:2580/wordchain/next',
-            form: {
-              char: userWord
-            }
-          }, function (err, res, body) {
-            req = JSON.parse(body);
-            if (req.data.length == 0) {
-              sendTextMessage(senderID, '봇이 졌습니다.');
-              end2endState = false;
-              success = true;
-              botWord = "";
-              userWord = "";
-              req = "";
-              length = "";
-            } else {
-              randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
-              sendTextMessage(senderID, req.data[randomCount].word);
-              botWord = req.data[randomCount].word;
-            }
-          })
-          break;
-        } else {
-          success = false;
+  } else {
+    callback(wordDB[wordDB.length - 1]);
+    request.post({
+      url: 'http://0xf.kr:2580/wordchain/next',
+      form: {
+        char: wordDB[wordDB.length - 1]
+      }
+    }, function (err, res, body) {
+      req = JSON.parse(body);
+      try {
+        for (var i = 0; i < req.data.length; i++) {
+          if (req.data[i].word === word) {
+            callback(": " + req.data[i].word + ", " + word);            
+            success = true;
+            userWord = word[word.length - 1];
+            callback('정답입니다');
+            request.post({
+              url: 'http://0xf.kr:2580/wordchain/next',
+              form: {
+                char: userWord
+              }
+            }, function (err, res, body) {
+              req = JSON.parse(body);
+              if (req.data.length !== 0) {
+                randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+                sendTextMessage(senderID, req.data[randomCount].word);
+                botWord = req.data[randomCount].word;
+              } else {
+                sendTextMessage(senderID, '봇이 졌습니다.');
+                end2endState = false;
+                success = true;
+                botWord = "";
+                userWord = "";
+                req = "";
+                length = "";
+              }
+            })
+            break;
+          } else {
+            success = false;
+          }
         }
+        if (!success) {
+          callback("단어가 없습니다");
+        }
+      } catch (e) {
+        callback("땡");
       }
-      callback(": " + req.data[i].word + ", " + word + ", " + wordDB[wordDB.length - 1]);
-      if(!success) {
-        callback("단어가 없습니다");
-      }
-    } catch (e) {
-      callback("땡");
-    }
-  })
+    })
+  }
 }
 
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
