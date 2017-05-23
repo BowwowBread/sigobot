@@ -364,6 +364,7 @@ function receivedMessage(event) {
           });
         } else if (!endFirstState) {
           idData[i].state = true;
+          idData[i].score = 0;
           sendTextMessage(senderID, "현재 최고점수는 " + idData[i].highscore + "점 입니다.");
         }
         end2endState = false;
