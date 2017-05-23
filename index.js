@@ -246,7 +246,6 @@ var matchWord = function (callback, wordDB, word, senderID) {
         callback("땡");
       }
     })
-  }
 }
 
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
