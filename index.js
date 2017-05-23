@@ -206,6 +206,23 @@ var matchWord = function (callback, wordDB, word, senderID) {
       return;
     }
     req = JSON.parse(body);
+    if (req.data.length == 0) {
+      callback('당신이 졌습니다.');
+      if (idData[i].score > idData[i].highscore) {
+        callback(idData[i].score + "점으로 최고기록을 달성하였습니다.");
+        idData[i].highscore = idData[i].score;
+      } else {
+        callback("총 점수는 " + idData[i].score + "입니다.");
+      }
+      end2endState = false;
+      idData[i].state = false;
+      success = true;
+      botWord = "";
+      userWord = "";
+      req = "";
+      length = "";
+      return;
+    }
     try {
       for (var j = 0; j < req.data.length; j++) {
         if (req.data[j].word === word) {
