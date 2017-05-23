@@ -222,7 +222,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
           }, function (err, res, body) {
             req = JSON.parse(body);
             if (req.data.length !== 0) {
-              randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+              randomCount = parseInt(Math.random() * (req.data.length - 1));
               callback(req.data[randomCount].word);
               botWord = req.data[randomCount].word;
             } else {
