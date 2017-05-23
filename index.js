@@ -230,6 +230,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
                 callback("총 점수는 " + idData[i].score + "입니다.");
               }
               end2endState = false;
+              idData[i].state = false;              
               success = true;
               botWord = "";
               userWord = "";
