@@ -194,11 +194,6 @@ var wordDB = function (callback, word) {
 
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
-  // if (wordDB[wordDB.length - 1] !== word[0]) {
-  //   callback("땡");
-  //   return;
-  // } else {
-    callback(wordDB[wordDB.length - 1]);
     request.post({
       url: 'http://0xf.kr:2580/wordchain/next',
       form: {
@@ -207,11 +202,12 @@ var matchWord = function (callback, wordDB, word, senderID) {
     }, function (err, res, body) {
       req = JSON.parse(body);
       try {
-        for (var i = 0; i < req.data.length; i++) {
-          if (req.data[i].word === word) {
-            callback(": " + req.data[i].word + ", " + word);            
+        for (var j = 0; j < req.data.length; j++) {
+          if (req.data[j].word === word) {
+            callback(": " + req.data[j].word + ", " + word);            
             success = true;
             userWord = word[word.length - 1];
+            idData[i].score += req.data[j].score;
             callback('정답입니다');
             request.post({
               url: 'http://0xf.kr:2580/wordchain/next',
@@ -226,6 +222,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
                 botWord = req.data[randomCount].word;
               } else {
                 sendTextMessage(senderID, '봇이 졌습니다.');
+                sendTextMessage(senderID, '점수는 ' + idData[i].score);                
                 end2endState = false;
                 success = true;
                 botWord = "";
@@ -240,7 +237,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
           }
         }
         if (!success) {
-          callback("단어가 없습니다");
+          callback("땡");
         }
       } catch (e) {
         callback("땡");
@@ -348,6 +345,7 @@ function receivedMessage(event) {
           idData.push({
             id: senderID,
             state: true,
+            score: 0,
           });
         } else if (!endFirstState) {
           idData[i].state = true;
