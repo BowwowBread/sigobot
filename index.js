@@ -177,6 +177,7 @@ var randomCount;
 var todayState = true;
 var idData = [];
 var endFirstState = true;
+var i = 0;
 
 // 단어사전
 var wordDB = function (callback, word) {
@@ -288,7 +289,6 @@ function receivedMessage(event) {
 
     // 끝말잇기 상태
     let length = idData.length;
-    var i = 0;
     end2endState = false;
     for (i = 0; i < length; i++) {
       if (idData[i].id === senderID && idData[i].state === true) {
