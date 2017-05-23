@@ -195,56 +195,58 @@ var wordDB = function (callback, word) {
 
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
-    request.post({
-      url: 'http://0xf.kr:2580/wordchain/next',
-      form: {
-        char: wordDB[wordDB.length - 1]
-      }
-    }, function (err, res, body) {
-      req = JSON.parse(body);
-      try {
-        for (var j = 0; j < req.data.length; j++) {
-          if (req.data[j].word === word) {
-            callback(": " + req.data[j].word + ", " + word);            
-            success = true;
-            userWord = word[word.length - 1];
-            callback(req.data[j].score);
-            idData[i].score += req.data[j].score;
-            callback('정답입니다');
-            request.post({
-              url: 'http://0xf.kr:2580/wordchain/next',
-              form: {
-                char: userWord
-              }
-            }, function (err, res, body) {
-              req = JSON.parse(body);
-              if (req.data.length !== 0) {
-                randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
-                sendTextMessage(senderID, req.data[randomCount].word);
-                botWord = req.data[randomCount].word;
+  request.post({
+    url: 'http://0xf.kr:2580/wordchain/next',
+    form: {
+      char: wordDB[wordDB.length - 1]
+    }
+  }, function (err, res, body) {
+    req = JSON.parse(body);
+    try {
+      for (var j = 0; j < req.data.length; j++) {
+        if (req.data[j].word === word) {
+          success = true;
+          userWord = word[word.length - 1];
+          idData[i].score += req.data[j].score;
+          callback('정답입니다');
+          request.post({
+            url: 'http://0xf.kr:2580/wordchain/next',
+            form: {
+              char: userWord
+            }
+          }, function (err, res, body) {
+            req = JSON.parse(body);
+            if (req.data.length !== 0) {
+              randomCount = parseInt(Math.random() * (req.data.length - 0 + 1));
+              sendTextMessage(senderID, req.data[randomCount].word);
+              botWord = req.data[randomCount].word;
+            } else {
+              sendTextMessage(senderID, '봇이 졌습니다.');
+              if (idData[i].score > idData[i].highscore) {
+                sendTextMessage(senderID, idData[i].score + "점으로 최고기록을 달성하였습니다.");
               } else {
-                sendTextMessage(senderID, '봇이 졌습니다.');
-                sendTextMessage(senderID, "총 점수는 " + idData[i].score + "입니다.");                        
-                end2endState = false;
-                success = true;
-                botWord = "";
-                userWord = "";
-                req = "";
-                length = "";
+                sendTextMessage(senderID, "총 점수는 " + idData[i].score + "입니다.");
               }
-            })
-            break;
-          } else {
-            success = false;
-          }
+              end2endState = false;
+              success = true;
+              botWord = "";
+              userWord = "";
+              req = "";
+              length = "";
+            }
+          })
+          break;
+        } else {
+          success = false;
         }
-        if (!success) {
-          callback("땡");
-        }
-      } catch (e) {
+      }
+      if (!success) {
         callback("땡");
       }
-    })
+    } catch (e) {
+      callback("땡");
+    }
+  })
 }
 
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
@@ -301,7 +303,12 @@ function receivedMessage(event) {
       if (end2endFinishMatching.rating == 1) {
         end2endState = false;
         sendTextMessage(senderID, "끝말잇기를 종료하였습니다.");
-        sendTextMessage(senderID, idData[i].score);        
+        if (idData[i].score > idData[i].highscore) {
+          sendTextMessage(senderID, idData[i].score + "점으로 최고기록을 달성하였습니다.");
+        } else {
+          sendTextMessage(senderID, "총 점수는 " + idData[i].score + "점 입니다.");
+
+        }
         idData[i].state = false;
       } else if (!(end2endFinishMatching.rating == 1)) {
         matchWord(function (result) {
@@ -349,9 +356,11 @@ function receivedMessage(event) {
             id: senderID,
             state: true,
             score: 0,
+            highscore: 0,
           });
         } else if (!endFirstState) {
           idData[i].state = true;
+          sendTextMessage(senderID, "현재 최고점수는 " + idData[i].highscore + "점 입니다.");
         }
         end2endState = false;
         success = true;
