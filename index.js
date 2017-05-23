@@ -207,7 +207,6 @@ var matchWord = function (callback, wordDB, word, senderID) {
             callback(": " + req.data[j].word + ", " + word);            
             success = true;
             userWord = word[word.length - 1];
-            idData[i].score += req.data[j].score;
             callback('정답입니다');
             request.post({
               url: 'http://0xf.kr:2580/wordchain/next',
@@ -222,7 +221,6 @@ var matchWord = function (callback, wordDB, word, senderID) {
                 botWord = req.data[randomCount].word;
               } else {
                 sendTextMessage(senderID, '봇이 졌습니다.');
-                sendTextMessage(senderID, '점수는 ' + idData[i].score);                
                 end2endState = false;
                 success = true;
                 botWord = "";
