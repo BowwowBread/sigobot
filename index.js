@@ -265,7 +265,7 @@ var matchWord = function (callback, wordDB, word, senderID) {
         }
       }
       if (!success) {
-        callback("땡");
+        callback("단어가 없습니다.");
       }
     } catch (e) {
       callback("땡");
