@@ -123,7 +123,6 @@ var schoolSchedule = function (callback) {
   if (timeMonth < 10) {
     timeMonth = '0' + timeMonth;
   }
-
   var url = "http://stu.sen.go.kr/sts_sci_sf01_001.do?schulCode=B100000599&schulCrseScCode=4&schulKndScCode=04&ay={{year}}&mm={{month}}";
   var modernUrl = url.replace('{{year}}', timeYear).replace('{{month}}', timeMonth);
 
