@@ -14,11 +14,9 @@ app.use(bodyParser.urlencoded({
   extended: false
 }))
 app.use(bodyParser.json())
-
 app.get('/', function (req, res) {
   res.send('this is sigo chatbot!')
 })
-
 app.get('/webhook/', function (req, res) {
   if (req.query['hub.verify_token'] === token) {
     res.send(req.query['hub.challenge'])
