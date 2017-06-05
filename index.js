@@ -4,6 +4,7 @@ const request = require('request');
 const app = express();
 const stringSimilarity = require('string-similarity');
 const cheerio = require('cheerio');
+var https = require('https');
 
 const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBACj6JvTDXPeG949bFTXZCVdYhJsK7Bm1N3GVdBUhjcOsFsUl11eZANgSOEi7FJWFV23ZAB9uIBG7GoLPi6ORIBha0E9fUfWOPsLb3kMKhlRwXtNbsFCsUyI4ZBmbWrQm1VCxPafiKZBLZCBzQSTRyjA1eoLVrxKQZDZD"
@@ -456,6 +457,10 @@ function callSendAPI(messageData) {
     }
   });
 }
-app.listen(app.get('port'), function () {
-  console.log('running on port', app.get('port'))
-})
+// app.listen(app.get('port'), function () {
+//   console.log('running on port', app.get('port'))
+// })
+
+var httpsServer = https.createServer(app);
+
+httpsServer.listen(app.get('port'));
