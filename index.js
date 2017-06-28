@@ -189,7 +189,7 @@ var wordDB = function (callback, word) {
     callback(req.data[randomCount].word, req.data.length, req);
   })
 }
-
+/*
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
   request.post({
@@ -272,6 +272,8 @@ var matchWord = function (callback, wordDB, word, senderID) {
 
 var random = ['가', '나', '다', '라', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'];
 randomCount = parseInt(Math.random() * (random.length - 0 + 1));
+*/
+
 
 // 메세지 수신
 function receivedMessage(event) {
@@ -293,8 +295,10 @@ function receivedMessage(event) {
       schedule: ['스케줄', '일정', '달력'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
       weather: ['weather', '날씨', '오늘 날씨'],
+      /*
       end2endStart: ['끝말잇기 시작'],
       end2endFinish: ['끝말잇기 종료'],
+      */
       help: ['help', '도움말'],
       info: ['내정보'],
     };
@@ -305,11 +309,14 @@ function receivedMessage(event) {
     var scheduleMatching = stringSimilarity.findBestMatch(messageText, detecting.schedule).bestMatch;
     var hiMatching = stringSimilarity.findBestMatch(messageText, detecting.hi).bestMatch;
     var weatherMatching = stringSimilarity.findBestMatch(messageText, detecting.weather).bestMatch;
+    /*
     var end2endStartMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endStart).bestMatch;
     var end2endFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
+    */
     var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
     var infoMatching = stringSimilarity.findBestMatch(messageText, detecting.info).bestMatch;
 
+    /*
     // 끝말잇기 상태
     let length = idData.length;
     var i = 0;
@@ -335,7 +342,6 @@ function receivedMessage(event) {
           idData[i].highscore = idData[i].score;
         } else {
           sendTextMessage(senderID, "총 점수는 " + idData[i].score + "점 입니다.");
-
         }
         idData[i].state = false;
       } else if (!(end2endFinishMatching.rating == 1)) {
@@ -344,6 +350,7 @@ function receivedMessage(event) {
         }, botWord, messageText, senderID)
       }
     } else {
+      */
       if (hiMatching.rating > 0.5) {
         sendTextMessage(senderID, '안녕하세요');
       } else if (cafeMatching.rating > 0.5) {
@@ -370,7 +377,9 @@ function receivedMessage(event) {
         sendTextMessage(senderID, senderID);
         sendTextMessage(senderID, end2endState);
         sendTextMessage(senderID, endFirstState);
-      } else if (end2endStartMatching.rating == 1) {
+      } 
+      /*
+      else if (end2endStartMatching.rating == 1) {
         for (var i = 0; i < length; i++) {
           if (idData[i].id === senderID) {
             endFirstState = false;
@@ -405,8 +414,9 @@ function receivedMessage(event) {
           length = len;
           botWord = result;
         }, random[randomCount]);
-      } else if (helpMatching.rating > 0.7) {
-        sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다 \n 봇과 끝말잇기 게임을 하려면 끝말잇기 시작 을 입력해주세요");
+        */
+      else if (helpMatching.rating > 0.7) {
+        sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
       } else {
         sendTextMessage(senderID, messageText);
       }
