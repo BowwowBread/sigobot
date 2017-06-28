@@ -4,7 +4,7 @@ const request = require('request');
 const app = express();
 const stringSimilarity = require('string-similarity');
 const cheerio = require('cheerio');
-const schedule = require('node-schedule');
+const CronJob = require('cron').CronJob;
 
 const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBAEXVwh2ijxXTGVZCStQRea5veLX35f9nJiL2uxaDdRJZChjo8VDpoHGDZAjMMaaThSOtDVgOzFdi89FniWchHuvSYcXq6eUPEwHJf1vg4ZBaJXOeu5PWDeEbDHa2E14UDwabgZCfWZC40gDln4pWg4PyVkxN106AZDZD"
@@ -64,13 +64,14 @@ function postFeed(message) {
   })
 }
 
-var j = schedule.scheduleJob('*/10 * * * *', function() {
-  todayState = true;
-  schoolCafeteria(function(result) {
-    postFeed(result);
-  }, todayState);
-})
+new CronJob('00 00 10 * * *', function() {
+    todayState = true;
+    schoolCafeteria(function (result) {
+          postFeed(result);
+    }, todayState)
+}, function () {
 
+}, true, 'Asia/Seoul')
 /**
  * Message
  */
