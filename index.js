@@ -64,7 +64,7 @@ function postFeed(message) {
   })
 }
 
-new CronJob('00 00 10 * * *', function() {
+new CronJob('00 5 * * * *', function() {
     todayState = true;
     schoolCafeteria(function (result) {
           postFeed(result);
