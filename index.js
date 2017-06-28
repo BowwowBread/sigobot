@@ -4,6 +4,7 @@ const request = require('request');
 const app = express();
 const stringSimilarity = require('string-similarity');
 const cheerio = require('cheerio');
+const CronJob = require('cron').CronJob;
 
 const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBAEXVwh2ijxXTGVZCStQRea5veLX35f9nJiL2uxaDdRJZChjo8VDpoHGDZAjMMaaThSOtDVgOzFdi89FniWchHuvSYcXq6eUPEwHJf1vg4ZBaJXOeu5PWDeEbDHa2E14UDwabgZCfWZC40gDln4pWg4PyVkxN106AZDZD"
@@ -52,17 +53,25 @@ app.post('/webhook', function (req, res) {
  * Posting
  */
 
-function postFeed(callback, message) {
-    callback(message + '' + access)
+function postFeed(message) {
     request.post({
     url:'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBAA5YY2AEIJN86msxWU4ivWkvKbZBFtjZCAiGVZA3PH6SV4eXlkb4memOSfDjHarQc7N4TWcyyoNYFZCgeRTimsacBufVMHZBvHU0ouKZAZCb5LoDeQ5FUkIKqUsntv9zJfiXPZA2c9LDW3naMymVeoXb2qmKBKBuqcfyRWIZABrfNY662D2ItMJlBVhXzIbw5MwZDZD', 
     form: {
       message:message,
     }}, 
   function(err,res,body){
-    callback(res + '' + err + '' + body);
+
   })
 }
+
+new CronJob('00 10 * * * *', function() {
+    todayState = true;
+    schoolCafeteria(function (result) {
+          postFeed(result);
+    }, todayState)
+}, function () {
+
+}, true, 'Asia/Seoul')
 /**
  * Message
  */
@@ -436,9 +445,7 @@ function receivedMessage(event) {
       sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
     } else if (postMatching.rating > 0.7) {
       sendTextMessage(senderID, "글쓰기중")
-      postFeed(function (result) {
-        sendTextMessage(senderID, result);
-      }, "테스트");
+      postFeed("테스트");
     } else {
       sendTextMessage(senderID, messageText);
     }
