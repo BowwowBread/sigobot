@@ -76,6 +76,7 @@ var formData = {
   message: 'test'
 };
 function postFeed(callback, postText) {
+  try {
   callback(postText);
   request.post('https://graph.facebook.com/${id}/feed', formData, function (err, res, body) {
     if(!err && res.statusCode == 200) {
@@ -84,6 +85,9 @@ function postFeed(callback, postText) {
         callback('글쓰기 실패' + response + ',' + error);      
     }
   })
+  } catch(e) {
+    callback('글쓰기 실패');
+  }
 }
 /**
  * Message
