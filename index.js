@@ -4,7 +4,7 @@ const request = require('request');
 const app = express();
 const stringSimilarity = require('string-similarity');
 const cheerio = require('cheerio');
-const passport = require('passport-facebook');
+
 const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBAEXVwh2ijxXTGVZCStQRea5veLX35f9nJiL2uxaDdRJZChjo8VDpoHGDZAjMMaaThSOtDVgOzFdi89FniWchHuvSYcXq6eUPEwHJf1vg4ZBaJXOeu5PWDeEbDHa2E14UDwabgZCfWZC40gDln4pWg4PyVkxN106AZDZD"
 
@@ -49,24 +49,6 @@ app.post('/webhook', function (req, res) {
 /**
  * Posting
  */
-
-passport.use(new FacebookStrategy({
-    clientID: 499867256804339,
-    clientSecret: c387dcccf48e352f0df85b31185bd26c,
-    callbackURL: "http://localhost:3000/auth/facebook/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
-
-app.get('/login/facebook',  
-  passport.authenticate('facebook', {
-    scope: ['publish_actions', 'manage_pages']
-  }
-));
 
 const id = '1529061383780127';
 
