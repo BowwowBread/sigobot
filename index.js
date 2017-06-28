@@ -53,28 +53,38 @@ app.post('/webhook', function (req, res) {
 const id = '1529061383780127';
 
 
+// function postFeed(callback, postText) {
+//   callback(postText);
+//   request({
+//     method: 'POST',
+//     uri: 'https://graph.facebook.com/v2.8/${id}/feed',
+//     qs: {
+//       access_token: access,
+//       message: postText,
+//     },
+//     function (error, response, body) {
+//       if (!error && response.statusCode == 200) {
+//         callback('글쓰기 성공');
+//       } else {
+//         callback('글쓰기 실패' + response + ',' + error);
+//       }
+//     }
+//   });
+// }
+var formData = {
+  access_token: access,
+  message: 'test'
+};
 function postFeed(callback, postText) {
   callback(postText);
-  request({
-    method: 'POST',
-    uri: 'https://graph.facebook.com/v2.8/${id}/feed',
-    qs: {
-      access_token: access,
-      message: postText,
-    },
-    function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        callback('글쓰기 성공');
-      } else {
-        callback('글쓰기 실패' + response + ',' + error);
-        console.error("Unable to send message.");
-        console.error(response);
-        console.error(error);
-      }
+  request.post('https://graph.facebook.com/${id}/feed', formData, function (err, res, body) {
+    if(!err && res.statusCode == 200) {
+      callback('글쓰기 성공');
+    } else {
+        callback('글쓰기 실패' + response + ',' + error);      
     }
-  });
+  })
 }
-
 /**
  * Message
  */
