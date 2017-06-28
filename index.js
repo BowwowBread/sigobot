@@ -4,7 +4,7 @@ const request = require('request');
 const app = express();
 const stringSimilarity = require('string-similarity');
 const cheerio = require('cheerio');
-var FB = require('fb');
+const FB = require('facebook-node');
 
 const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBAEXVwh2ijxXTGVZCStQRea5veLX35f9nJiL2uxaDdRJZChjo8VDpoHGDZAjMMaaThSOtDVgOzFdi89FniWchHuvSYcXq6eUPEwHJf1vg4ZBaJXOeu5PWDeEbDHa2E14UDwabgZCfWZC40gDln4pWg4PyVkxN106AZDZD"
@@ -50,16 +50,16 @@ app.post('/webhook', function (req, res) {
 /**
  * Posting
  */
+FB.setApiVersion("v2.2");
 
 function postFeed(callback, message) {
 FB.setAccessToken(access);
-
+ 
 var body = message;
-callback(body);
-FB.api('me/feed', 'post', { message: body}, function (res) {
+FB.api('499867256804339/feed', 'post', { message: body}, function (res) {
   if(!res || res.error) {
-    console.log(!res ? 'error occurred' : res.error);
     callback(res.error);
+    console.log(!res ? 'error occurred' : res.error);
     return;
   }
   callback(res.id);
