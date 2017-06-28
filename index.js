@@ -445,7 +445,7 @@ function receivedMessage(event) {
       */
     else if (helpMatching.rating > 0.7) {
       sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
-    } else if (oistMatching.rating > 0.7) {
+    } else if (postMatching.rating > 0.7) {
       postFeed(function (result) {
         sendTextMessage(senderID, result);
       }, "테스트");
