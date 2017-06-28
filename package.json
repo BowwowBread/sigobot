@@ -21,5 +21,8 @@
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "string-similarity": "^1.1.0"
+  },
+  "devDependencies": {
+    "node-schedule": "^1.2.3"
   }
 }
