@@ -4,6 +4,7 @@ const request = require('request');
 const app = express();
 const stringSimilarity = require('string-similarity');
 const cheerio = require('cheerio');
+const CronJob = require('cron').CronJob;
 
 const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBAEXVwh2ijxXTGVZCStQRea5veLX35f9nJiL2uxaDdRJZChjo8VDpoHGDZAjMMaaThSOtDVgOzFdi89FniWchHuvSYcXq6eUPEwHJf1vg4ZBaJXOeu5PWDeEbDHa2E14UDwabgZCfWZC40gDln4pWg4PyVkxN106AZDZD"
@@ -32,6 +33,14 @@ app.post('/webhook', function (req, res) {
     data.entry.forEach(function (entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
+
+      entry.messaging.forEach(function (event) {
+        if (event.message) {
+          receivedMessage(event);
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+      });
     });
 
     res.sendStatus(200);
@@ -45,17 +54,24 @@ app.post('/webhook', function (req, res) {
  */
 
 function postFeed(message) {
-  request.post({
-      url: 'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBAA5YY2AEIJN86msxWU4ivWkvKbZBFtjZCAiGVZA3PH6SV4eXlkb4memOSfDjHarQc7N4TWcyyoNYFZCgeRTimsacBufVMHZBvHU0ouKZAZCb5LoDeQ5FUkIKqUsntv9zJfiXPZA2c9LDW3naMymVeoXb2qmKBKBuqcfyRWIZABrfNY662D2ItMJlBVhXzIbw5MwZDZD',
-      form: {
-        message: message,
-      }
-    },
-    function (err, res, body) {
+    request.post({
+    url:'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBAA5YY2AEIJN86msxWU4ivWkvKbZBFtjZCAiGVZA3PH6SV4eXlkb4memOSfDjHarQc7N4TWcyyoNYFZCgeRTimsacBufVMHZBvHU0ouKZAZCb5LoDeQ5FUkIKqUsntv9zJfiXPZA2c9LDW3naMymVeoXb2qmKBKBuqcfyRWIZABrfNY662D2ItMJlBVhXzIbw5MwZDZD', 
+    form: {
+      message:message,
+    }}, 
+  function(err,res,body){
 
-    })
+  })
 }
 
+new CronJob('00 10 * * * *', function() {
+    todayState = true;
+    schoolCafeteria(function (result) {
+          postFeed(result);
+    }, todayState)
+}, function () {
+
+}, true, 'Asia/Seoul')
 /**
  * Message
  */
