@@ -45,14 +45,15 @@ app.post('/webhook', function (req, res) {
  */
 
 function postFeed(message) {
-    request.post({
-    url:'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBAA5YY2AEIJN86msxWU4ivWkvKbZBFtjZCAiGVZA3PH6SV4eXlkb4memOSfDjHarQc7N4TWcyyoNYFZCgeRTimsacBufVMHZBvHU0ouKZAZCb5LoDeQ5FUkIKqUsntv9zJfiXPZA2c9LDW3naMymVeoXb2qmKBKBuqcfyRWIZABrfNY662D2ItMJlBVhXzIbw5MwZDZD', 
-    form: {
-      message:message,
-    }}, 
-  function(err,res,body){
+  request.post({
+      url: 'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBAA5YY2AEIJN86msxWU4ivWkvKbZBFtjZCAiGVZA3PH6SV4eXlkb4memOSfDjHarQc7N4TWcyyoNYFZCgeRTimsacBufVMHZBvHU0ouKZAZCb5LoDeQ5FUkIKqUsntv9zJfiXPZA2c9LDW3naMymVeoXb2qmKBKBuqcfyRWIZABrfNY662D2ItMJlBVhXzIbw5MwZDZD',
+      form: {
+        message: message,
+      }
+    },
+    function (err, res, body) {
 
-  })
+    })
 }
 
 /**
