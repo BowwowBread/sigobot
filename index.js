@@ -351,78 +351,78 @@ function receivedMessage(event) {
       }
     } else {
       */
-      if (hiMatching.rating > 0.5) {
-        sendTextMessage(senderID, '안녕하세요');
-      } else if (cafeMatching.rating > 0.5) {
-        if (messageText.match('내일')) {
-          todayState = false;
-          schoolCafeteria(function (result) {
-            sendTextMessage(senderID, result);
-          }, todayState)
-        } else {
-          todayState = true;
-          schoolCafeteria(function (result, todayState) {
-            sendTextMessage(senderID, result);
-          }, todayState)
-        }
-      } else if (scheduleMatching.rating > 0.5) {
-        schoolSchedule(function (result, todayState) {
+    if (hiMatching.rating > 0.5) {
+      sendTextMessage(senderID, '안녕하세요');
+    } else if (cafeMatching.rating > 0.5) {
+      if (messageText.match('내일')) {
+        todayState = false;
+        schoolCafeteria(function (result) {
           sendTextMessage(senderID, result);
-        })
-      } else if (weatherMatching.rating > 0.5) {
-        weatherParser(function (result) {
-          sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
-        })
-      } else if (infoMatching.rating > 0.5) {
-        sendTextMessage(senderID, senderID);
-        sendTextMessage(senderID, end2endState);
-        sendTextMessage(senderID, endFirstState);
-      } 
-      /*
-      else if (end2endStartMatching.rating == 1) {
-        for (var i = 0; i < length; i++) {
-          if (idData[i].id === senderID) {
-            endFirstState = false;
-            break;
-          } else {
-            endFirstState = true;
-          }
-        }
-        if (endFirstState) {
-          idData.push({
-            id: senderID,
-            state: true,
-            score: 0,
-            highscore: 0,
-          });
-        } else if (!endFirstState) {
-          idData[i].state = true;
-          idData[i].score = 0;
-          sendTextMessage(senderID, "현재 최고점수는 " + idData[i].highscore + "점 입니다.");
-        }
-        end2endState = false;
-        success = true;
-        botWord = "";
-        userWord = "";
-        req = "";
-        length = "";
-        randomCount = parseInt(Math.random() * (random.length - 1));
-        sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
-        wordDB(function (result, len, req) {
-          sendTextMessage(senderID, result);
-          req = req;
-          length = len;
-          botWord = result;
-        }, random[randomCount]);
-        */
-      else if (helpMatching.rating > 0.7) {
-        sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
+        }, todayState)
       } else {
-        sendTextMessage(senderID, messageText);
+        todayState = true;
+        schoolCafeteria(function (result, todayState) {
+          sendTextMessage(senderID, result);
+        }, todayState)
       }
+    } else if (scheduleMatching.rating > 0.5) {
+      schoolSchedule(function (result, todayState) {
+        sendTextMessage(senderID, result);
+      })
+    } else if (weatherMatching.rating > 0.5) {
+      weatherParser(function (result) {
+        sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
+      })
+    } else if (infoMatching.rating > 0.5) {
+      sendTextMessage(senderID, senderID);
+      sendTextMessage(senderID, end2endState);
+      sendTextMessage(senderID, endFirstState);
+    }
+    /*
+    else if (end2endStartMatching.rating == 1) {
+      for (var i = 0; i < length; i++) {
+        if (idData[i].id === senderID) {
+          endFirstState = false;
+          break;
+        } else {
+          endFirstState = true;
+        }
+      }
+      if (endFirstState) {
+        idData.push({
+          id: senderID,
+          state: true,
+          score: 0,
+          highscore: 0,
+        });
+      } else if (!endFirstState) {
+        idData[i].state = true;
+        idData[i].score = 0;
+        sendTextMessage(senderID, "현재 최고점수는 " + idData[i].highscore + "점 입니다.");
+      }
+      end2endState = false;
+      success = true;
+      botWord = "";
+      userWord = "";
+      req = "";
+      length = "";
+      randomCount = parseInt(Math.random() * (random.length - 1));
+      sendTextMessage(senderID, "끝말잇기를 시작였습니다. 중단하시려면 '끝말잇기 종료'를 입력해주세요");
+      wordDB(function (result, len, req) {
+        sendTextMessage(senderID, result);
+        req = req;
+        length = len;
+        botWord = result;
+      }, random[randomCount]);
+      */
+    else if (helpMatching.rating > 0.7) {
+      sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
+    } else {
+      sendTextMessage(senderID, messageText);
     }
   }
 }
+
 
 function sendGenericMessage(recipientId, messageText) {
   // To be expanded in later sections
