@@ -23,6 +23,10 @@ app.get('/webhook/', function (req, res) {
   }
   res.send('No entry')
 })
+app.get('/login/facebook',
+  passport.authenticate('facebook', {
+    scope: ['publish_actions', 'manage_pages']
+  }))
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
@@ -46,7 +50,33 @@ app.post('/webhook', function (req, res) {
   }
 });
 
+/**
+ * Posting
+ */
 
+const id = '1529061383780127';
+
+
+function postFeed(callback, postText) {
+  request({
+    method: 'POST',
+    uri: 'https://graph.facebook.com/v2.8/${id}/feed',
+    qs: {
+      access_token: access,
+      message: postText,
+    },
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        callback('글쓰기 성공');
+      } else {
+        callback('글쓰기 실패' + response + ',' + error);
+        console.error("Unable to send message.");
+        console.error(response);
+        console.error(error);
+      }
+    }
+  });
+}
 
 /**
  * Message
@@ -301,10 +331,12 @@ function receivedMessage(event) {
       */
       help: ['help', '도움말'],
       info: ['내정보'],
+      post: ['글쓰기'],
     };
 
 
     // 텍스트 매칭
+    var postMatching = stringSimilarity.findBestMatch(messageText, detecting.post).bestMatch;
     var cafeMatching = stringSimilarity.findBestMatch(messageText, detecting.cafeteria).bestMatch;
     var scheduleMatching = stringSimilarity.findBestMatch(messageText, detecting.schedule).bestMatch;
     var hiMatching = stringSimilarity.findBestMatch(messageText, detecting.hi).bestMatch;
@@ -417,6 +449,10 @@ function receivedMessage(event) {
       */
     else if (helpMatching.rating > 0.7) {
       sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
+    } else if (oistMatching.rating > 0.7) {
+      postFeed(function (result) {
+        sendTextMessage(senderID, result);
+      }, "테스트");
     } else {
       sendTextMessage(senderID, messageText);
     }
