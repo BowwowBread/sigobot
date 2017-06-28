@@ -82,7 +82,7 @@ function postFeed(callback, postText) {
     if(!err && res.statusCode == 200) {
       callback('글쓰기 성공');
     } else {
-        callback('글쓰기 실패' + response + ',' + error);      
+        callback('글쓰기 실패' + res + ',' + err);      
     }
   })
   } catch(e) {
