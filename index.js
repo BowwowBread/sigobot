@@ -4,6 +4,7 @@ const request = require('request');
 const app = express();
 const stringSimilarity = require('string-similarity');
 const cheerio = require('cheerio');
+const schedule = require('node-schedule');
 
 const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBAEXVwh2ijxXTGVZCStQRea5veLX35f9nJiL2uxaDdRJZChjo8VDpoHGDZAjMMaaThSOtDVgOzFdi89FniWchHuvSYcXq6eUPEwHJf1vg4ZBaJXOeu5PWDeEbDHa2E14UDwabgZCfWZC40gDln4pWg4PyVkxN106AZDZD"
@@ -51,6 +52,17 @@ app.post('/webhook', function (req, res) {
 /**
  * Posting
  */
+
+var rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(0,6)];
+rule.minute = 10;
+
+schedule.scheduleJob(rule, function () {
+  todayState = true;
+  schoolCafeteria(function (result) {
+    postFeed(result);
+  },todayState);
+});
 
 function postFeed(message) {
     request.post({
