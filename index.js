@@ -64,15 +64,15 @@ schedule.scheduleJob(rule, function () {
   },todayState);
 });
 
-function postFeed(message) {
+function postFeed(callback, message) {
     request.post({
     url:'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBAA5YY2AEIJN86msxWU4ivWkvKbZBFtjZCAiGVZA3PH6SV4eXlkb4memOSfDjHarQc7N4TWcyyoNYFZCgeRTimsacBufVMHZBvHU0ouKZAZCb5LoDeQ5FUkIKqUsntv9zJfiXPZA2c9LDW3naMymVeoXb2qmKBKBuqcfyRWIZABrfNY662D2ItMJlBVhXzIbw5MwZDZD', 
     form: {
       message:message,
     }}, 
   function(err,res,body){
-
-  })
+    callback(err + '' + res + '' + body);
+  });
 }
 
 /**
@@ -447,8 +447,11 @@ function receivedMessage(event) {
     else if (helpMatching.rating > 0.7) {
       sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
     } else if (postMatching.rating > 0.7) {
-      sendTextMessage(senderID, "글쓰기중")
-      postFeed("테스트");
+      sendTextMessage(senderID, "글쓰기중");
+      postFeed(function (result) {
+        sendTextMessage(senderID, result);
+      }, "테스트");
+      // postFeed("테스트");
     } else {
       sendTextMessage(senderID, messageText);
     }
