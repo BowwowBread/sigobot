@@ -343,7 +343,6 @@ function receivedMessage(event) {
     var end2endFinishMatching = stringSimilarity.findBestMatch(messageText, detecting.end2endFinish).bestMatch;
     */
     var helpMatching = stringSimilarity.findBestMatch(messageText, detecting.help).bestMatch;
-    var infoMatching = stringSimilarity.findBestMatch(messageText, detecting.info).bestMatch;
 
     /*
     // 끝말잇기 상태
