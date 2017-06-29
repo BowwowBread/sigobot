@@ -34,10 +34,12 @@ app.post('/webhook', function (req, res) {
 
       entry.messaging.forEach(function(event) {
         if (event.message) {
-          console.log("if event.message" + event);
+          console.log("수신");
+          console.log(JSON.stringify(event));
           receivedMessage(event); 
         } else {
-          console.log('else', event);
+          console.log('발신');
+          console.log(JSON.stringify(event));          
         }
       });
     });
@@ -381,10 +383,10 @@ function receivedMessage(event) {
 
 
 
-    if (hiMatching.rating > 0.5) {
+    if (hiMatching.rating > 0.3) {
       // 인사      
       sendTextMessage(senderID, '안녕하세요');
-    } else if (cafeMatching.rating > 0.5) {
+    } else if (cafeMatching.rating > 0.3) {
       // 내일급식
       if (messageText.match('내일')) {
         todayState = false;
@@ -398,12 +400,12 @@ function receivedMessage(event) {
           sendTextMessage(senderID, result);
         }, todayState)
       }
-    } else if (scheduleMatching.rating > 0.5) {
+    } else if (scheduleMatching.rating > 0.3) {
       // 일정
       schoolSchedule(function (result, todayState) {
         sendTextMessage(senderID, result);
       })
-    } else if (weatherMatching.rating > 0.5) {
+    } else if (weatherMatching.rating > 0.3) {
       // 날씨
       weatherParser(function (result) {
         sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
@@ -446,10 +448,10 @@ function receivedMessage(event) {
         botWord = result;
       }, random[randomCount]);
       */
-    else if (helpMatching.rating > 0.7) {
+    else if (helpMatching.rating > 0.3) {
       // 도움말
       sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
-    } else if (postMatching.rating > 0.7) {
+    } else if (postMatching.rating > 0.3) {
       // 글쓰기
       sendTextMessage(senderID, "글쓰기중");
       postFeed(function (result) {
