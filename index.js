@@ -306,15 +306,12 @@ randomCount = parseInt(Math.random() * (random.length - 0 + 1));
 
 // 메세지 수신
 function receivedMessage(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
+  // var senderID = event.sender.id;
+  // var recipientID = event.recipient.id;
+  // var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:",
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
-  console.log(JSON.stringify(message.text));
+  console.log('받은 메세지 : ' + JSON.stringify(message.text));
 
 
   var messageText = message.text;
@@ -497,10 +494,8 @@ function callSendAPI(messageData) {
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
-      var messageId = body.message_id;
-
-      console.log("Successfully sent generic message with id %s to recipient %s",
-        messageId, recipientId);
+      console.log("ID : " + recipientId + ' : ' + rmessageData.message.text);      
+      console.log('답장 성공');
     } else {
       console.error("Unable to send message.");
       console.error(response);
