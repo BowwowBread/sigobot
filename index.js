@@ -28,17 +28,17 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
 
   if (data.object === 'page') {
-    console.log(JSON.stringify(data.entry));
-    data.entry.forEach(function(entry) {
+    console.log('data.entry ' + JSON.stringify(data.entry));
+    data.entry.forEach(function(entry, i) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
-      console.log(JSON.stringify(entry));
+      console.log('entry ' + i + ':' + JSON.stringify(entry));
       entry.messaging.forEach(function(event) {
         if (event.message) {
-          console.log("수신");
+          console.log("-----수신-----");
           receivedMessage(event); 
         } else {
-          console.log('발신');
+          console.log('-----발신-----');
         }
       });
     });
@@ -62,7 +62,7 @@ rule.minute = 0;
 schedule.scheduleJob(rule, function () {
   todayState = true;
   schoolCafeteria(function (result) {
-    console.log(result);
+    console.log('-----글 등록-----\n' + result);
     postFeed('안녕하세오 좋은 아침입니다. \n 오늘의 점심입니다. \n ' + result);
   },todayState);
 });
@@ -74,7 +74,7 @@ function postFeed(message) {
       message:message,
     }}, 
   function(err,res,body){
-    console.log('글쓰기 성공');
+    console.log('-----글쓰기 성공-----');
   });
 }
 
@@ -312,7 +312,7 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log('받은 메세지 : ' + JSON.stringify(message.text));
+  console.log('-----받은 메세지----- \n' + JSON.stringify(message.text));
 
 
   var messageText = message.text;
@@ -495,10 +495,10 @@ function callSendAPI(messageData) {
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
-      console.log("ID : " + recipientId + ' : ' + messageData.message.text);      
-      console.log('답장 성공');
+      console.log("ID : " + recipientId + ' : \n----------\n' + messageData.message.text);      
+      console.log('----------\n답장 성공');
     } else {
-      console.error("Unable to send message.");
+      console.error("-----답장 실패-----");
       console.error(response);
       console.error(error);
     }
