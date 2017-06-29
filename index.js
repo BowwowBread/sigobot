@@ -7,7 +7,7 @@ const cheerio = require('cheerio');
 const schedule = require('node-schedule');
 
 const token = process.env.FB_VERIFY_TOKEN
-const access = "EAAHGoGpG0ZCMBAEXVwh2ijxXTGVZCStQRea5veLX35f9nJiL2uxaDdRJZChjo8VDpoHGDZAjMMaaThSOtDVgOzFdi89FniWchHuvSYcXq6eUPEwHJf1vg4ZBaJXOeu5PWDeEbDHa2E14UDwabgZCfWZC40gDln4pWg4PyVkxN106AZDZD"
+const access = "EAAHGoGpG0ZCMBADz3ZBGRqMvI5VbGitDkZBHIP7Bq1XsgVN1yZA9imy4EJNLoXDHMJ48QU1fAFy2Vwyn7sP0VdO88ctE3hDdJAEmieGb7HkcT4GBzQTXf0Pb4F9BnMkZCEKgSBZAbgMG1q4alZAsmSuQOWlnXjbNktbTZClEwaCPdAZDZD"
 
 app.set('port', (process.env.PORT || 9990))
 
@@ -66,7 +66,7 @@ schedule.scheduleJob(rule, function () {
 
 function postFeed(callback, message) {
     request.post({
-    url:'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBAA5YY2AEIJN86msxWU4ivWkvKbZBFtjZCAiGVZA3PH6SV4eXlkb4memOSfDjHarQc7N4TWcyyoNYFZCgeRTimsacBufVMHZBvHU0ouKZAZCb5LoDeQ5FUkIKqUsntv9zJfiXPZA2c9LDW3naMymVeoXb2qmKBKBuqcfyRWIZABrfNY662D2ItMJlBVhXzIbw5MwZDZD', 
+    url:'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBADz3ZBGRqMvI5VbGitDkZBHIP7Bq1XsgVN1yZA9imy4EJNLoXDHMJ48QU1fAFy2Vwyn7sP0VdO88ctE3hDdJAEmieGb7HkcT4GBzQTXf0Pb4F9BnMkZCEKgSBZAbgMG1q4alZAsmSuQOWlnXjbNktbTZClEwaCPdAZDZD', 
     form: {
       message:message,
     }}, 
