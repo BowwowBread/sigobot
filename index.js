@@ -62,6 +62,7 @@ rule.minute = [0, 10, 20, 30, 40, 50];
 schedule.scheduleJob(rule, function () {
   todayState = true;
   schoolCafeteria(function (result) {
+    console.log(result);
     postFeed(result);
   },todayState);
 });
