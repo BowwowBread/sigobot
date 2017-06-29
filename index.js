@@ -28,11 +28,9 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
 
   if (data.object === 'page') {
-    console.log('data.entry ' + JSON.stringify(data.entry));
     data.entry.forEach(function(entry, i) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
-      console.log('entry ' + i + ':' + JSON.stringify(entry));
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("-----수신-----");
@@ -322,7 +320,7 @@ function receivedMessage(event) {
       cafeteria: ['급식', '점심', '오늘점심', '내일급식'],
       schedule: ['스케줄', '일정', '달력'],
       hi: ['안녕', 'hi', '하이', '방가', '인사', '반가워'],
-      weather: ['weather', '날씨', '오늘 날씨'],
+      weather: ['weather', '날씨', '날씨'],
       /*
       end2endStart: ['끝말잇기 시작'],
       end2endFinish: ['끝말잇기 종료'],
