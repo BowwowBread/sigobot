@@ -494,9 +494,9 @@ function callSendAPI(messageData) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
       
-      console.log("답장 : \n ID (" + recipientId +  ') : '+ messageData.message.text );      
+      console.log("답장 (ID - " + recipientId +  ') : \n'+ '"'+messageData.message.text+'"' );      
     } else {
-      console.error("-----답장 실패-----");
+      console.error("!!!!!답장 실패!!!!!");
       console.error(response);
       console.error(error);
     }
