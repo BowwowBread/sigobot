@@ -11,10 +11,10 @@ const access = "EAAHGoGpG0ZCMBADz3ZBGRqMvI5VbGitDkZBHIP7Bq1XsgVN1yZA9imy4EJNLoXD
 
 app.set('port', (process.env.PORT || 9990))
 
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
 }))
-app.use(bodyParser.json())
 app.get('/', function (req, res) {
   res.send('this is sigo chatbot!')
 })
@@ -57,13 +57,13 @@ app.post('/webhook', function (req, res) {
 
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0,6)];
-rule.minute = [0, 10, 20, 30, 40, 50];
+rule.minute = [10,20,30,40,50];
 
 schedule.scheduleJob(rule, function () {
   todayState = true;
   schoolCafeteria(function (result) {
     console.log(result);
-    postFeed(result);
+    postFeed('안녕하세오 좋은 아침입니다. \n 오늘의 점심입니다. \n ' + result);
   },todayState);
 });
 
@@ -194,18 +194,19 @@ var weatherParser = function (callback) {
   });
 };
 
-var end2endState = false;
-var success = true;
-var botWord;
-var userWord;
-var req;
-var length;
-var randomCount;
+// var end2endState = false;
+// var success = true;
+// var botWord;
+// var userWord;
+// var req;
+// var length;
+// var randomCount;
 var todayState = true;
-var idData = [];
-var endFirstState = true;
-var i = 0;
+// var idData = [];
+// var endFirstState = true;
+// var i = 0;
 
+/*
 // 단어사전
 var wordDB = function (callback, word) {
   request.post({
@@ -219,7 +220,7 @@ var wordDB = function (callback, word) {
     callback(req.data[randomCount].word, req.data.length, req);
   })
 }
-/*
+
 // 끝말잇기 매칭
 var matchWord = function (callback, wordDB, word, senderID) {
   request.post({
@@ -330,7 +331,6 @@ function receivedMessage(event) {
       end2endFinish: ['끝말잇기 종료'],
       */
       help: ['help', '도움말'],
-      info: ['내정보'],
       post: ['글쓰기'],
     };
 
@@ -383,32 +383,36 @@ function receivedMessage(event) {
       }
     } else {
       */
+
+
+
     if (hiMatching.rating > 0.5) {
+      // 인사      
       sendTextMessage(senderID, '안녕하세요');
     } else if (cafeMatching.rating > 0.5) {
+      // 내일급식
       if (messageText.match('내일')) {
         todayState = false;
         schoolCafeteria(function (result) {
           sendTextMessage(senderID, result);
         }, todayState)
       } else {
+        // 오늘급식
         todayState = true;
         schoolCafeteria(function (result, todayState) {
           sendTextMessage(senderID, result);
         }, todayState)
       }
     } else if (scheduleMatching.rating > 0.5) {
+      // 일정
       schoolSchedule(function (result, todayState) {
         sendTextMessage(senderID, result);
       })
     } else if (weatherMatching.rating > 0.5) {
+      // 날씨
       weatherParser(function (result) {
         sendTextMessage(senderID, "오늘의 날씨입니다 \n" + result);
       })
-    } else if (infoMatching.rating > 0.5) {
-      sendTextMessage(senderID, senderID);
-      sendTextMessage(senderID, end2endState);
-      sendTextMessage(senderID, endFirstState);
     }
     /*
     else if (end2endStartMatching.rating == 1) {
@@ -448,14 +452,16 @@ function receivedMessage(event) {
       }, random[randomCount]);
       */
     else if (helpMatching.rating > 0.7) {
+      // 도움말
       sendTextMessage(senderID, "SIGO 봇 도움말입니다 \n 급식, 일정, 날씨를 입력하면 정보를 제공해줍니다");
     } else if (postMatching.rating > 0.7) {
+      // 글쓰기
       sendTextMessage(senderID, "글쓰기중");
       postFeed(function (result) {
         sendTextMessage(senderID, result);
       }, "테스트");
-      // postFeed("테스트");
     } else {
+      // 따라말하기
       sendTextMessage(senderID, messageText);
     }
   }
