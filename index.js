@@ -33,9 +33,11 @@ app.post('/webhook', function (req, res) {
       var timeOfEvent = entry.time;
       entry.messaging.forEach(function(event) {
         if (event.message) {
+          console.log(event.message);                  
           console.log("-----수신-----");
           receivedMessage(event); 
         } else {
+          console.log(event.message);                  
           console.log('-----발신-----');
         }
       });
