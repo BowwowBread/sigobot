@@ -310,7 +310,7 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log('-----받은 메세지----- \n' + JSON.stringify(message.text));
+  console.log('받은 메세지 : \n' + JSON.stringify(message.text));
 
 
   var messageText = message.text;
@@ -493,8 +493,8 @@ function callSendAPI(messageData) {
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
-      console.log("ID : " + recipientId + ' : \n----------\n' + messageData.message.text);      
-      console.log('----------\n답장 성공');
+      
+      console.log("답장 : \n ID (" + recipientId +  ') : '+ messageData.message.text );      
     } else {
       console.error("-----답장 실패-----");
       console.error(response);
