@@ -494,7 +494,7 @@ function callSendAPI(messageData) {
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
-      console.log("ID : " + recipientId + ' : ' + rmessageData.message.text);      
+      console.log("ID : " + recipientId + ' : ' + messageData.message.text);      
       console.log('답장 성공');
     } else {
       console.error("Unable to send message.");
