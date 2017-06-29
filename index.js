@@ -11,10 +11,10 @@ const access = "EAAHGoGpG0ZCMBADz3ZBGRqMvI5VbGitDkZBHIP7Bq1XsgVN1yZA9imy4EJNLoXD
 
 app.set('port', (process.env.PORT || 9990))
 
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
 }))
-app.use(bodyParser.json())
 app.get('/', function (req, res) {
   res.send('this is sigo chatbot!')
 })
@@ -169,8 +169,7 @@ var schoolSchedule = function (callback) {
     });
 
     if (message != '') {
-      callback(timeMonth + '월 일정입니다');
-      callback(message);
+      callback(timeMonth + '월 일정입니다 \n' + message);
     } else {
       callback(timeMonth + "월 일정이 없습니다");
     }
