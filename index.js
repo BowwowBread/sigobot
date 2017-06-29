@@ -67,14 +67,14 @@ schedule.scheduleJob(rule, function () {
   },todayState);
 });
 
-function postFeed(callback, message) {
+function postFeed(message) {
     request.post({
     url:'https://graph.facebook.com/v2.8/1529061383780127/feed?access_token=EAAHGoGpG0ZCMBADz3ZBGRqMvI5VbGitDkZBHIP7Bq1XsgVN1yZA9imy4EJNLoXDHMJ48QU1fAFy2Vwyn7sP0VdO88ctE3hDdJAEmieGb7HkcT4GBzQTXf0Pb4F9BnMkZCEKgSBZAbgMG1q4alZAsmSuQOWlnXjbNktbTZClEwaCPdAZDZD', 
     form: {
       message:message,
     }}, 
   function(err,res,body){
-    callback(err + '' + res + '' + body);
+    console.log('글쓰기 성공');
   });
 }
 
