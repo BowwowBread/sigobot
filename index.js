@@ -55,7 +55,7 @@ app.post('/webhook', function (req, res) {
 
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0,6)];
-rule.minute = 10;
+rule.minute = [0, 10, 20, 30, 40, 50];
 
 schedule.scheduleJob(rule, function () {
   todayState = true;
