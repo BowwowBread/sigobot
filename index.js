@@ -35,11 +35,9 @@ app.post('/webhook', function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("수신");
-          console.log(JSON.stringify(event));
           receivedMessage(event); 
         } else {
           console.log('발신');
-          console.log(JSON.stringify(event));          
         }
       });
     });
