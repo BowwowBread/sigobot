@@ -33,12 +33,8 @@ app.post('/webhook', function (req, res) {
       var timeOfEvent = entry.time;
 
       entry.messaging.forEach(function(event) {
-        if (event.message) {
           console.log("if event.message" + event);
           receivedMessage(event); 
-        } else {
-          console.log('else', event);
-        }
       });
     });
 
