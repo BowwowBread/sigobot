@@ -30,7 +30,7 @@ app.post('/webhook', function (req, res) {
 
   if (data.object === 'page') {
 
-    console.log(data.entry);
+    console.log("------------ \n"+data.entry+"-------------\n");
 
     data.entry.forEach(function (entry) {
       var pageID = entry.id;
