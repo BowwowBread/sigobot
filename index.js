@@ -34,9 +34,10 @@ app.post('/webhook', function (req, res) {
 
       entry.messaging.forEach(function(event) {
         if (event.message) {
+          console.log("if event.message" + event);
           receivedMessage(event); 
         } else {
-          console.log('webhook received unknown event: ', event);
+          console.log('else', event);
         }
       });
     });
@@ -313,6 +314,7 @@ function receivedMessage(event) {
   console.log("Received message for user %d and page %d at %d with message:",
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
+  console.log(JSON.stringify(message.text));
 
 
   var messageText = message.text;
