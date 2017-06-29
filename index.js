@@ -306,9 +306,9 @@ randomCount = parseInt(Math.random() * (random.length - 0 + 1));
 
 // 메세지 수신
 function receivedMessage(event) {
-  // var senderID = event.sender.id;
-  // var recipientID = event.recipient.id;
-  // var timeOfMessage = event.timestamp;
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfMessage = event.timestamp;
   var message = event.message;
 
   console.log('받은 메세지 : ' + JSON.stringify(message.text));
