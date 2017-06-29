@@ -28,10 +28,11 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
 
   if (data.object === 'page') {
+    console.log(JSON.stringify(data.entry));
     data.entry.forEach(function(entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
-
+      console.log(JSON.stringify(entry));
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("수신");
