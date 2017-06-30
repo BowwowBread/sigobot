@@ -27,7 +27,7 @@ app.get('/webhook/', function (req, res) {
 app.post('/webhook', function (req, res) {
   var data = req.body;
   if (data.object == 'page') {
-    console.log("data : \n " + JSON.stringify(data);
+    console.log("data : \n " + JSON.stringify(data));
     if (data.entry[0].messaging[0].message) {
       console.log('-----수신-----');
       receivedMessage(data.entry[0].messaging[0]);
