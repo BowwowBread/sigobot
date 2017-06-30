@@ -28,7 +28,11 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
 
   if (data.object === 'page') {
-    console.log('data entry : \n' +JSON.stringify(data.entry.messaging.sender.message.text));
+    try {
+      console.log('data entry : \n' +JSON.stringify(data.entry.messaging.sender.message.text));
+    } catch (e) {
+      console.log('catch data entry : \n' + JSON.stringify(data.entry));
+    }
     /*
     * data.entry
     수신 :
@@ -37,22 +41,24 @@ app.post('/webhook', function (req, res) {
         "id":"1529061383780127",
         "time":1498705731134,
         "messaging":
-        [
-          {
-            "sender":
+          [
             {
-              "id":"1318438828238423"
-            },
-            "recipient":
-            {
-              "id":"1529061383780127"
-            },"timestamp":1498705730844,
-            "message":
-            {
-              "mid":"mid.$cAAU0Wt-aQ5hjIxflHFc8dKbaQZUR",
-              "seq":44636,"text":"미"
+              "sender":
+                {
+                  "id":"1318438828238423"
+                },
+                "recipient":
+                {
+                  "id":"1529061383780127"
+                },
+                "timestamp":1498705730844,
+                "message":
+                {
+                  "mid":"mid.$cAAU0Wt-aQ5hjIxflHFc8dKbaQZUR",
+                  "seq":44636,
+                  "text":"미"
+                }
             }
-          }
         ]
       }
     ]
