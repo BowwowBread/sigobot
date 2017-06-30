@@ -28,7 +28,7 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
 
   if (data.object === 'page') {
-    console.log('data entry : \n' +JSON.stringify(data.entry.messaging.message.text));
+    console.log('data entry : \n' +JSON.stringify(data.entry.messaging.sender.message.text));
     /*
     * data.entry
     수신 :
@@ -93,6 +93,7 @@ app.post('/webhook', function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("-----수신-----");
+          console.log(JSON.stringify(event));
           receivedMessage(event); 
         } else {
           console.log('-----발신-----');
