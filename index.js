@@ -30,7 +30,7 @@ app.post('/webhook', function (req, res) {
     console.log("data : \n " + JSON.stringify(data.entry[0].messaging[0]));
     if (data.entry[0].messaging[0].message) {
       console.log('-----수신-----');
-      receivedMessage(data.entry[0].messaging[0].message);
+      receivedMessage(data.entry[0].messaging[0]);
     } else {
       console.log('-----발신-----');
     }
