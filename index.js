@@ -30,12 +30,8 @@ app.post('/webhook', function (req, res) {
     if (data.entry[0].messaging[0].message) {
       console.log('-----수신-----');
       receivedMessage(data.entry[0].messaging[0]);
-    } else {
-      console.log('-----발신-----');
     }
     res.sendStatus(200);
-  } else {
-    console.log('-----글쓰기-----');
   }
 })
 // app.post('/webhook', function (req, res) {
@@ -500,12 +496,10 @@ function callSendAPI(messageData) {
     },
     method: 'POST',
     json: messageData
-
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
-      
-      console.log("답장 (ID - " + recipientId +  ') : \n'+ '"'+messageData.message.text+'"' );      
+      console.log("답장 (ID - " + recipientId +  ') : \n'+ '"'+messageData.message.text+'"\n-----발신-----' );
     } else {
       console.error("!!!!!답장 실패!!!!!");
       console.error(response);
