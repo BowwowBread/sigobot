@@ -26,27 +26,38 @@ app.get('/webhook/', function (req, res) {
 })
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  console.log('data : \n' + JSON.stringify(data));
-  if (data.object === 'page') {
-    data.entry.forEach(function(entry, i) {
-      var pageID = entry.id;
-      var timeOfEvent = entry.time;
-      entry.messaging.forEach(function(event) {
-        if (event.message) {
-          console.log("-----수신-----");
-          console.log("event : \n" + JSON.stringify(event));
-          receivedMessage(event); 
-        } else {
-          console.log('-----발신-----');
-        }
-      });
-    });
-
+  if (data.object == 'page') {
+    console.log("data : \n " + JSON.stringify(data.entry[0].messaging[0]));
+    if (data.entry[0].messaging[0].message) {
+      console.log('-----수신-----');
+      receivedMessage(data.entry[0].messaging[0].message);
+    } else {
+      console.log('-----발신-----');
+    }
     res.sendStatus(200);
   }
-
 })
-
+// app.post('/webhook', function (req, res) {
+//   var data = req.body;
+//   console.log('data : \n' + JSON.stringify(data));
+//   if (data.object === 'page') {
+//     data.entry.forEach(function(entry, i) {
+//       var pageID = entry.id;
+//       var timeOfEvent = entry.time;
+//       entry.messaging.forEach(function(event) {
+//         if (event.message) {
+//           console.log("-----수신-----");
+//           console.log("event : \n" + JSON.stringify(event));
+//           receivedMessage(event);
+//         } else {
+//           console.log('-----발신-----');
+//         }
+//       });
+//     });
+//     res.sendStatus(200);
+//   }
+// })
+//
 
 
 /**
