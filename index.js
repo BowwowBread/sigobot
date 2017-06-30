@@ -26,76 +26,15 @@ app.get('/webhook/', function (req, res) {
 })
 app.post('/webhook', function (req, res) {
   var data = req.body;
-
+  console.log('data : \n' + JSON.stringify(data));
   if (data.object === 'page') {
-      console.log('data entry : \n' + JSON.stringify(data.entry));
-    /*
-    * data.entry
-    수신 :
-    [
-      {
-        "id":"1529061383780127",
-        "time":1498705731134,
-        "messaging":
-          [
-            {
-              "sender":
-                {
-                  "id":"1318438828238423"
-                },
-                "recipient":
-                {
-                  "id":"1529061383780127"
-                },
-                "timestamp":1498705730844,
-                "message":
-                {
-                  "mid":"mid.$cAAU0Wt-aQ5hjIxflHFc8dKbaQZUR",
-                  "seq":44636,
-                  "text":"미"
-                }
-            }
-        ]
-      }
-    ]
-    발신 : 
-    [
-      {
-        "id":"1529061383780127",
-        "time":1498782358412,
-        "messaging":
-        [
-          {
-            "sender":
-            {
-              "id":"1318438828238423"
-            },
-            "recipient":
-            {
-              "id":"1529061383780127"
-            },
-            "timestamp":1498782358411,
-            "delivery":
-            {
-              "mids":
-              [
-                "mid.$cAAU0Wt-aQ5hjJ6kgOlc9mPXyuHbr"
-                ],
-                "watermark":1498782357562,
-                "seq":0
-              }
-            }
-          ]
-       }
-    ]
-    */
     data.entry.forEach(function(entry, i) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
       entry.messaging.forEach(function(event) {
         if (event.message) {
           console.log("-----수신-----");
-          console.log(JSON.stringify(event));
+          console.log("event : \n" + JSON.stringify(event));
           receivedMessage(event); 
         } else {
           console.log('-----발신-----');
