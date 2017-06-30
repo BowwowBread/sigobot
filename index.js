@@ -26,7 +26,7 @@ app.get('/webhook/', function (req, res) {
 })
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  if (data.object == 'page') {
+  if (data.object == 'page' && typeof data.entry[0].messaging != 'undefined') {
     console.log("data : \n " + JSON.stringify(data));
     if (data.entry[0].messaging[0].message) {
       console.log('-----수신-----');
@@ -35,6 +35,8 @@ app.post('/webhook', function (req, res) {
       console.log('-----발신-----');
     }
     res.sendStatus(200);
+  } else {
+    console.log('-----글쓰기-----');
   }
 })
 // app.post('/webhook', function (req, res) {
