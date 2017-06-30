@@ -28,8 +28,7 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
 
   if (data.object === 'page') {
-    console.log('-----메세지 도착-----');
-    console.log('data entry : \n' +JSON.stringify(data.entry.message));
+    console.log('data entry : \n' +JSON.stringify(data.entry.messaging.message.text));
     /*
     * data.entry
     수신 :
