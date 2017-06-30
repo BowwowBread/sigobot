@@ -28,7 +28,66 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
 
   if (data.object === 'page') {
-    console.log(JSON.stringify(data.entry));
+    console.log('-----메세지 도착-----');
+    console.log('data entry : \n' +JSON.stringify(data.entry.message));
+    /*
+    * data.entry
+    수신 :
+    [
+      {
+        "id":"1529061383780127",
+        "time":1498705731134,
+        "messaging":
+        [
+          {
+            "sender":
+            {
+              "id":"1318438828238423"
+            },
+            "recipient":
+            {
+              "id":"1529061383780127"
+            },"timestamp":1498705730844,
+            "message":
+            {
+              "mid":"mid.$cAAU0Wt-aQ5hjIxflHFc8dKbaQZUR",
+              "seq":44636,"text":"미"
+            }
+          }
+        ]
+      }
+    ]
+    발신 : 
+    [
+      {
+        "id":"1529061383780127",
+        "time":1498782358412,
+        "messaging":
+        [
+          {
+            "sender":
+            {
+              "id":"1318438828238423"
+            },
+            "recipient":
+            {
+              "id":"1529061383780127"
+            },
+            "timestamp":1498782358411,
+            "delivery":
+            {
+              "mids":
+              [
+                "mid.$cAAU0Wt-aQ5hjJ6kgOlc9mPXyuHbr"
+                ],
+                "watermark":1498782357562,
+                "seq":0
+              }
+            }
+          ]
+       }
+    ]
+    */
     data.entry.forEach(function(entry, i) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
@@ -452,9 +511,7 @@ function receivedMessage(event) {
     } else if (postMatching.rating > 0.3) {
       // 글쓰기
       sendTextMessage(senderID, "글쓰기중");
-      postFeed(function (result) {
-        sendTextMessage(senderID, result);
-      }, "테스트");
+      postFeed("테스트");
     } else {
       // 따라말하기
       sendTextMessage(senderID, messageText);
@@ -506,3 +563,5 @@ function callSendAPI(messageData) {
 app.listen(app.get('port'), function () {
   console.log('running on port', app.get('port'))
 })
+
+
