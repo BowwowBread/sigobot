@@ -10,7 +10,12 @@ const token = process.env.FB_VERIFY_TOKEN
 const access = "EAAHGoGpG0ZCMBADz3ZBGRqMvI5VbGitDkZBHIP7Bq1XsgVN1yZA9imy4EJNLoXDHMJ48QU1fAFy2Vwyn7sP0VdO88ctE3hDdJAEmieGb7HkcT4GBzQTXf0Pb4F9BnMkZCEKgSBZAbgMG1q4alZAsmSuQOWlnXjbNktbTZClEwaCPdAZDZD"
 
 app.set('port', (process.env.PORT || 9990))
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+  next();
+});
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
@@ -461,6 +466,7 @@ function receivedMessage(event) {
       // 글쓰기
       sendTextMessage(senderID, "글쓰기중");
       postFeed("테스트");
+      console.log('-----글쓰기-----');
     } else {
       // 따라말하기
       sendTextMessage(senderID, messageText);
@@ -496,6 +502,7 @@ function callSendAPI(messageData) {
     },
     method: 'POST',
     json: messageData
+
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
