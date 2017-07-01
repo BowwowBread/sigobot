@@ -72,12 +72,20 @@ rule.dayOfWeek = [0, new schedule.Range(0,6)];
 rule.hour = 1;
 rule.minute = 0;
 
-schedule.scheduleJob(rule, function () {
-  todayState = true;
+var job = function(callback) {
   schoolCafeteria(function (result) {
-    console.log('-----글 등록-----\n' + result);
-    postFeed('안녕하세오 좋은 아침입니다. \n 오늘의 점심입니다. \n ' + result);
-  },todayState);
+    callback(result);
+  },true);
+  schoolSchedule(function (result) {
+    callback(result);
+  }, false)
+}
+
+
+schedule.scheduleJob(rule, function () {
+  job(function(result) {
+    postFeed(result);
+  })
 });
 
 function postFeed(message) {
@@ -154,41 +162,70 @@ var schoolCafeteria = function (callback, todayState) {
 };
 
 // 학교 일정
-var schoolSchedule = function (callback) {
-
+var schoolSchedule = function (callback, schduleState) {
+  
   var time = new Date();
   var timeYear = time.getFullYear();
   var timeMonth = time.getMonth() + 1;
   var timeDay = time.getDate();
-
+  timeDay = 3;
+  var tomorrowDay = timeDay + 1;
   if (timeMonth < 10) {
     timeMonth = '0' + timeMonth;
   }
+  if (timeDay < 10) {
+    timeDay = '0' + timeDay;
+  }
+  if (tomorrowDay < 10) {
+    tomorrowDay = '0' + tomorrowDay;
+  }
   var url = "http://stu.sen.go.kr/sts_sci_sf01_001.do?schulCode=B100000599&schulCrseScCode=4&schulKndScCode=04&ay={{year}}&mm={{month}}";
   var modernUrl = url.replace('{{year}}', timeYear).replace('{{month}}', timeMonth);
-
+  
   request(modernUrl, function (err, res, body) {
-
+    
     if (err) return console.log(err);
-
+    
     var $ = cheerio.load(body);
     var elements = $('tbody td');
     var message = "";
-
+    
     elements.each(function () {
       var data = $(this).find('strong').text();
       var day = $(this).find('em').text();
-
+      
       if (data != '') {
         message += day + '일' + data + '\n';
       }
     });
-
-    if (message != '') {
-      callback(timeMonth + '월 일정입니다 \n' + message);
-    } else {
-      callback(timeMonth + "월 일정이 없습니다");
-    }
+    try {
+      if (message != '') {
+        if (schduleState) {
+          callback(timeMonth + '월 일정입니다 \n' + message);
+          message = message.split('\n');
+          for (var i = 0; i <= message.length; i++) {
+            if (message[i].substr(0, 2) == timeDay) {
+              callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
+            }
+            if (message[i + 1].substr(0, 2) == tomorrowDay) {
+              callback('내일 일정은 ' + message[i + 1].substr(3) + '입니다');
+            }
+          }
+        } else {
+          message = message.split('\n');
+          for (var i = 0; i <= message.length; i++) {
+            if (message[i].substr(0, 2) == timeDay) {
+              callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
+            }
+            if (message[i + 1].substr(0, 2) == tomorrowDay) {
+              callback('내일 일정은 ' + message[i + 1].substr(3) + '입니다');
+            }
+          }
+        }
+      } else {
+        callback(timeMonth + "월 일정이 없습니다");
+      }
+    } catch (e) { }
   });
 };
 
@@ -321,8 +358,6 @@ randomCount = parseInt(Math.random() * (random.length - 0 + 1));
 // 메세지 수신
 function receivedMessage(event) {
   var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
   var message = event.message;
 
   console.log('받은 메세지 : \n' + JSON.stringify(message.text));
@@ -401,22 +436,20 @@ function receivedMessage(event) {
     } else if (cafeMatching.rating > 0.3) {
       // 내일급식
       if (messageText.match('내일')) {
-        todayState = false;
         schoolCafeteria(function (result) {
           sendTextMessage(senderID, result);
-        }, todayState)
+        }, false)
       } else {
         // 오늘급식
-        todayState = true;
-        schoolCafeteria(function (result, todayState) {
+        schoolCafeteria(function (result) {
           sendTextMessage(senderID, result);
-        }, todayState)
+        }, true)
       }
     } else if (scheduleMatching.rating > 0.3) {
       // 일정
-      schoolSchedule(function (result, todayState) {
+      schoolSchedule(function (result) {
         sendTextMessage(senderID, result);
-      })
+      }, true)
     } else if (weatherMatching.rating > 0.3) {
       // 날씨
       weatherParser(function (result) {
@@ -466,7 +499,9 @@ function receivedMessage(event) {
     } else if (postMatching.rating > 0.3) {
       // 글쓰기
       sendTextMessage(senderID, "글쓰기중");
-      postFeed("테스트");
+      job(function(result) {
+        postFeed(result);
+      })
       console.log('-----글쓰기-----');
     } else {
       // 따라말하기
