@@ -168,7 +168,6 @@ var schoolSchedule = function (callback, schduleState) {
   var timeYear = time.getFullYear();
   var timeMonth = time.getMonth() + 1;
   var timeDay = time.getDate();
-  timeDay = 3;
   var tomorrowDay = timeDay + 1;
   if (timeMonth < 10) {
     timeMonth = '0' + timeMonth;
