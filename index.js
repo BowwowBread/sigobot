@@ -16,9 +16,10 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
   next();
 });
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
-  extended: false
+  extended: true
 }))
 app.get('/', function (req, res) {
   res.send('this is sigo chatbot!')
@@ -68,7 +69,7 @@ app.post('/webhook', function (req, res) {
 
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0,6)];
-rule.hour = 8;
+rule.hour = 1;
 rule.minute = 0;
 
 schedule.scheduleJob(rule, function () {
