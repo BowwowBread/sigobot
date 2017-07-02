@@ -18,6 +18,7 @@ var schoolSchedule = function (callback, schduleState) {
   var timeYear = time.getFullYear();
   var timeMonth = time.getMonth() + 1;
   var timeDay = time.getDate();
+  timeDay = 20;
   var tomorrowDay = timeDay + 1;
   if (timeMonth < 10) {
     timeMonth = '0' + timeMonth;
@@ -54,20 +55,22 @@ var schoolSchedule = function (callback, schduleState) {
           message = message.split('\n');
           for (var i = 0; i <= message.length; i++) {
             if (message[i].substr(0, 2) == timeDay) {
-              callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
-            }
-            if (message[i + 1].substr(0, 2) == tomorrowDay) {
-              callback('내일 일정은 ' + message[i + 1].substr(3) + '입니다');
+              if (message[i + 1].substr(0, 2) == tomorrowDay) {
+                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.\n' + '내일 일정은 ' + message[i + 1].substr(3) + '입니다');
+              } else {
+                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
+              }
             }
           }
         } else {
           message = message.split('\n');
           for (var i = 0; i <= message.length; i++) {
             if (message[i].substr(0, 2) == timeDay) {
-              callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
-            }
-            if (message[i + 1].substr(0, 2) == tomorrowDay) {
-              callback('내일 일정은 ' + message[i + 1].substr(3) + '입니다');
+              if (message[i + 1].substr(0, 2) == tomorrowDay) {
+                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.\n' + '내일 일정은 ' + message[i + 1].substr(3) + '입니다');
+              } else {
+                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
+              }
             }
           }
         }
@@ -136,14 +139,16 @@ var schoolCafeteria = function (callback, todayState) {
     });
   });
 };
+
+
 var job = function(callback) {
-  schoolCafeteria(function (result) {
-    callback(result);
+  schoolCafeteria(function (result1) {
+    schoolSchedule(function (result2) {
+      callback(result1+ '\n' + result2);
+    }, false)
   },true);
-  schoolSchedule(function (result) {
-    callback(result);
-  }, false)
 }
+
 job(function(result) {
   console.log(result);
 })
