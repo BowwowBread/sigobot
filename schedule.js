@@ -148,6 +148,10 @@ var job = function(callback) {
   },true);
 }
 
-job(function(result) {
-  console.log(result);
-})
+// job(function(result) {
+//   console.log(result);
+// })
+
+schoolSchedule(function (result2) {
+  console.log(result2);
+}, true)

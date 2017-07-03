@@ -69,7 +69,7 @@ app.post('/webhook', function (req, res) {
 
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(1,6)];
-rule.hour = 1;
+rule.hour = 23;
 rule.minute = 0;
 
 var job = function(callback) {
