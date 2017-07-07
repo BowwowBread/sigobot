@@ -83,6 +83,7 @@ var job = function(callback) {
 schedule.scheduleJob(rule, function () {
   job(function(result) {
     postFeed(result);
+    console.log('post feed');
   })
 });
 
