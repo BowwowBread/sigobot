@@ -81,9 +81,10 @@ var job = function(callback) {
 }
 
 schedule.scheduleJob(rule, function () {
+  console.log('-----post feed-----');
+  console.log('time : ' + new Date());
   job(function(result) {
     postFeed(result);
-    console.log('post feed');
   })
 });
 
@@ -544,6 +545,7 @@ function callSendAPI(messageData) {
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var recipientId = body.recipient_id;
+      console.log('time : ' + new Date());
       console.log("답장 (ID - " + recipientId +  ') : \n'+ '"'+messageData.message.text+'"\n-----발신-----' );
     } else {
       console.error("!!!!!답장 실패!!!!!");
