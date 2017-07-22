@@ -11,77 +11,6 @@ const cheerio = require('cheerio');
 const schedule = require('node-schedule');
 
 
-
-var schoolSchedule = function (callback, schduleState) {
-  
-  var time = new Date();
-  var timeYear = time.getFullYear();
-  var timeMonth = time.getMonth() + 1;
-  var timeDay = time.getDate();
-  var tomorrowDay = timeDay + 1;
-  if (timeMonth < 10) {
-    timeMonth = '0' + timeMonth;
-  }
-  if (timeDay < 10) {
-    timeDay = '0' + timeDay;
-  }
-  if (tomorrowDay < 10) {
-    tomorrowDay = '0' + tomorrowDay;
-  }
-  var url = "http://stu.sen.go.kr/sts_sci_sf01_001.do?schulCode=B100000599&schulCrseScCode=4&schulKndScCode=04&ay={{year}}&mm={{month}}";
-  var modernUrl = url.replace('{{year}}', timeYear).replace('{{month}}', timeMonth);
-  
-  request(modernUrl, function (err, res, body) {
-    
-    if (err) return console.log(err);
-    
-    var $ = cheerio.load(body);
-    var elements = $('tbody td');
-    var message = "";
-    
-    elements.each(function () {
-      var data = $(this).find('strong').text();
-      var day = $(this).find('em').text();
-      
-      if (data != '') {
-        message += day + '일' + data + '\n';
-      }
-    });
-    try {
-      if (message != '') {
-        if (schduleState) {
-          callback(timeMonth + '월 일정입니다 \n' + message);
-          message = message.split('\n');
-          for (var i = 0; i <= message.length; i++) {
-            if (message[i].substr(0, 2) == timeDay) {
-              if (message[i + 1].substr(0, 2) == tomorrowDay) {
-                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.\n' + '내일 일정은 ' + message[i + 1].substr(3) + '입니다');
-              } else {
-                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
-              }
-            }
-          }
-        } else {
-          message = message.split('\n');
-          for (var i = 0; i <= message.length; i++) {
-            if (message[i].substr(0, 2) == timeDay) {
-              if (message[i + 1].substr(0, 2) == tomorrowDay) {
-                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.\n' + '내일 일정은 ' + message[i + 1].substr(3) + '입니다');
-              } else {
-                callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
-              }
-            }
-          }
-        }
-      } else {
-        callback(timeMonth + "월 일정이 없습니다");
-      }
-    } catch (e) {
-      
-    }
-  });
-};
-
 var schoolCafeteria = function (callback, todayState) {
   
   // 현재 날짜
@@ -139,19 +68,105 @@ var schoolCafeteria = function (callback, todayState) {
   });
 };
 
+// 학교 일정
+var schoolSchedule = function (callback, schduleState) {
+  
+  var time = new Date();
+  var timeYear = time.getFullYear();
+  var timeDay = time.getDate();
+  var timeMonth = time.getMonth() + 1;
+  var tomorrowDay = timeDay + 1;
+  if (timeMonth < 10) {
+    timeMonth = '0' + timeMonth;
+  }
+  if (timeDay < 10) {
+    timeDay = '0' + timeDay;
+  }
+  if (tomorrowDay < 10) {
+    tomorrowDay = '0' + tomorrowDay;
+  }
+  var url = "http://stu.sen.go.kr/sts_sci_sf01_001.do?schulCode=B100000599&schulCrseScCode=4&schulKndScCode=04&ay={{year}}&mm={{month}}";
+  var modernUrl = url.replace('{{year}}', timeYear).replace('{{month}}', timeMonth);
+  
+  request(modernUrl, function (err, res, body) {
+    
+    if (err) return console.log(err);
+    
+    var $ = cheerio.load(body);
+    var elements = $('tbody td');
+    var message = "";
+    
+    elements.each(function () {
+      var data = $(this).find('strong').text();
+      var day = $(this).find('em').text();
+      
+      if (data != '') {
+        message += day + '일' + data + '\n';
+      }
+    });
+      if (message != '') {
+        if (schduleState) {
+          // 해당 월 일정
+          var split_message = message.split('\n');
+          for (var i = 0; i <= split_message.length - 1; i++) {
+            if (i == split_message.length - 1) {
+              callback(timeMonth + '월 일정입니다 \n' + message);
+              break;
+            }
+            if (split_message[i].substr(0, 2) == timeDay && split_message[i+1].substr(0,2) == tomorrowDay) {
+              callback(timeMonth + '월 일정입니다 \n' + message + '\n오늘의 일정은 ' + split_message[i].substr(3) + '입니다.\n' + '내일 일정은 ' + split_message[i + 1].substr(3) + '입니다');
+              break;
+            } else if (split_message[i].substr(0,2) == tomorrowDay) {
+              callback(timeMonth + '월 일정입니다 \n' + message + '\n내일 일정은 ' + split_message[i].substr(3) + '입니다');
+              break;
+            } else if (split_message[i].substr(0,2) == timeDay){
+              callback(timeMonth + '월 일정입니다 \n' + message + '\n오늘의 일정은 ' + split_message[i].substr(3) + '입니다.');
+              break;
+            }
+          }
+        } else {
+          //오늘 일정 또는 내일 일정
+          message = message.split('\n');
+          for (var i = 0; i <= message.length - 1; i++) {
+            if ( i == message.length - 1 ) {
+              callback('s');
+              break;
+            }
+            if (message[i].substr(0, 2) == timeDay && message[i+1].substr(0,2) == tomorrowDay) {
+              callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.\n' + '내일 일정은 ' + message[i + 1].substr(3) + '입니다');
+              break;
+            } else if (message[i].substr(0,2) == tomorrowDay) {
+              callback('내일 일정은 ' + message[i].substr(3) + '입니다');
+              break;
+            } else if (message[i].substr(0,2) == timeDay){
+              callback('오늘의 일정은 ' + message[i].substr(3) + '입니다.');
+              break;
+            }
+          }
+        }
+      } else {
+        callback(timeMonth + "월 일정이 없습니다");
+      }
+  });
+};
+
 
 var job = function(callback) {
   schoolCafeteria(function (result1) {
     schoolSchedule(function (result2) {
       callback(result1+ '\n' + result2);
-    }, false)
+    }, true);
   },true);
 }
 
-// job(function(result) {
-//   console.log(result);
-// })
 
-schoolSchedule(function (result2) {
-  console.log(result2);
-}, true)
+  job(function(result) {
+      console.log(result);
+  })
+
+
+// schoolCafeteria(function (result1) {
+//   schoolSchedule(function (result2) {
+//     console.log(result1+ '\n' + result2);
+//   }, false)
+// },true);
